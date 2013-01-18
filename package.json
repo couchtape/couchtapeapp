@@ -1,0 +1,11 @@
+{
+  "name": "couchtape",
+  "title": "couchtape app",
+  "description": "Mediacenter deluxe",
+  "version": "0.1.0",
+  "dependencies": {
+    "grunt": "*",
+    "grunt-contrib": "*",
+    "express": "3.x"
+  }
+}
