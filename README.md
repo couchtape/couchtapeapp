@@ -1,1 +1,8 @@
 # couchtape
+
+
+## Installation
+
+```
+$ npm install
+```
