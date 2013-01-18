@@ -1,4 +1,4 @@
 #!/bin/sh
 
-node server/app.js &
+node server/app.js
 
