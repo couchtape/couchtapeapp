@@ -16,6 +16,8 @@ angular.module('couchtapeParty').controller('SongsCtrl', ['$scope', 'CouchtapeSe
 
   promise.then(function (data) {
     $scope.songs = data;
+  }, function (data) {
+     $scope.songs = data; 
   });
 }]);
 
