@@ -3,13 +3,16 @@
 <head>
   <title>TV | couchtape Party</title>
   <meta charset="utf-8">
+  <base href="/" />
   <link href='http://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="/tv/css/main.css" media="screen" />
     <script>
         var CONFIG = {
-            'session': '<%=session%>'
+            'session': '<%=session%>',
+            'host': '<%=host%>'
         }
     </script>
+    <script src="/socket.io/socket.io.js"></script>
   <script src="/tv/js/app.js"></script>
 </head>
 <body>
