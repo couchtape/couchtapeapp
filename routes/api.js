@@ -10,8 +10,8 @@ api.db = {};
 api.getItemsCollection = function (cb) {
 
     api.db.collection('items', function (err, data) {
-
         if (err) {
+            console.log("Unable to get oAUTH2 Token from MongoDB");
             cb(err);
         } else {
             cb(null, data);
