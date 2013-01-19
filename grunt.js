@@ -2,7 +2,11 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     watch: {
-      files: ['client/js/src/*.js'],
+      files: [
+        'client/js/src/bootstrap.js',
+        'client/js/src/config.js', 
+        'client/js/src/*.js'
+      ],
       tasks: 'concat'
     },
 
