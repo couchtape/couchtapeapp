@@ -19,6 +19,14 @@ function player($scope) {
 
 function playlistCtrl($scope) {
 
+
+    var socket = io.connect('http://localhost');
+    socket.on('news', function (data) {
+        console.log(data);
+        socket.emit('my other event', { my: 'data' });
+    });
+
+
     o3djs.require('o3djs.shader');
 
 // init() once the page has finished loading.
@@ -141,9 +149,7 @@ function playlistCtrl($scope) {
                         var count = 0;
                         el.addEventListener('webkitTransitionEnd', function () {
                             if (count === 0) {
-                                console.log('webkitTransitionEnd');
-                                console.log('tv/mp3/' + $scope.songs[songId].file);
-                                loadSample('tv/mp3/' + $scope.songs[songId].file);
+                                loadSample($scope.songs[songId].file);
                                 $scope.$apply(function () {
                                     $scope.songs.shift();
                                 });
@@ -151,6 +157,7 @@ function playlistCtrl($scope) {
                             count++;
                         }, false);
                     } else {
+                        console.log('Loading file: ', $scope.songs[songId].file);
                         loadSample($scope.songs[songId].file);
                     }
                     songId = 1;
@@ -203,15 +210,15 @@ function playlistCtrl($scope) {
         id: ''
     },
     {
-        img: 'tv/img/one-by-one.jpg',
-        file: '01 All My Life.mp3',
-        title: 'All My Live',
-        artist: 'Foo Fighters',
+        img: '/api/image/markusmeineke/a62960e5-e0c7-4a98-8344-da6608c802da',
+        file: '/api/get/markusmeineke/a62960e5-e0c7-4a98-8344-da6608c802da',
+        title: 'discopolis - committed to sparkle motion',
+        artist: 'Discopolis',
         class: '',
         id: ''
     },
     {
-        img: 'tv/img/wasting-light.jpg',
+        img: 'img/wasting-light.jpg',
         file: '01 Bridge Burning.mp3',
         title: 'Bridge Burning',
         artist: 'Foo Fighters',
@@ -219,7 +226,7 @@ function playlistCtrl($scope) {
         id: ''
     },
     {
-        img: 'tv/img/cat-power-sun.jpg',
+        img: 'img/cat-power-sun.jpg',
         file: '01 Cherokee.mp3',
         title: 'Cherokee',
         artist: 'Cat Power',
@@ -227,7 +234,7 @@ function playlistCtrl($scope) {
         id: ''
     },
     {
-        img: 'tv/img/foo-fighters-echoes-silence-patience-grace.jpg',
+        img: 'img/foo-fighters-echoes-silence-patience-grace.jpg',
         file: '01-The-Pretender.mp3',
         title: 'The Pretender',
         artist: 'Foo Fighters',
