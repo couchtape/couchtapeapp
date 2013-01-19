@@ -3,13 +3,13 @@ var socket = io.connect("/");
 socket.on('enqueue', function (data) {
     console.log(data);
     if (document.onEnqueue) {
-        onEnqueue(data);
+        document.onEnqueue(data);
     }
 });
 
 socket.on('next', function (data) {
     if (document.onNextSong) {
-        onNextSong();
+        document.onNextSong();
     }
 });
 
