@@ -151,7 +151,7 @@ function playlistCtrl($scope) {
                             count++;
                         }, false);
                     } else {
-                        loadSample('tv/mp3/' + $scope.songs[songId].file);
+                        loadSample($scope.songs[songId].file);
                     }
                     songId = 1;
                 });
@@ -198,7 +198,7 @@ function playlistCtrl($scope) {
         img: '/api/image/frankyhill/718654cc-a40f-4dea-8cda-7c52328c2118',
         file: '/api/get/frankyhill/718654cc-a40f-4dea-8cda-7c52328c2118',
         title: 'discopolis - committed to sparkle motion',
-        artist: 'Kollektiv Turmstrasse',
+        artist: 'Discopolis',
         class: '',
         id: ''
     },

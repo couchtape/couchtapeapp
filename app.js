@@ -57,7 +57,7 @@ app.get('/a/:session', function (req, res){
 })
 
 
-MongoClient.connect("mongodb://localhost:27017/exampleDb", function(err, db) {
+MongoClient.connect("mongodb://localhost:27017/couchtape", function(err, db) {
     if(!err) {
         console.log("Connected to Database");
 
