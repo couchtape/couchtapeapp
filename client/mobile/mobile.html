@@ -26,13 +26,13 @@
       <div id="main" class="flex flex-fill" ng-view></div>
     </div>
   </body>
+  <script>
+      var CONFIG = {
+          session: '<%=session%>',
+          host: '<%=host%>'
+      };
+  </script>
   <script src="/socket.io/socket.io.js"></script>
   <script src=vendor/angular.min.js></script>
-  <script>
-    var CONFIG = {
-      session: '<%=session%>',
-      host: '<%=host%>'
-    };
-  </script>
   <script src=/mobile/js/app.js></script>
 </html>

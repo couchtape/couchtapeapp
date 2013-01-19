@@ -15,6 +15,9 @@ var express = require('express'),
     MongoClient = require('mongodb');
 
 var app = express();
+
+var server = http.createServer(app);
+
 var code;
 
 app.configure(function () {
@@ -38,6 +41,12 @@ app.configure('development', function () {
     app.use(express.errorHandler());
 });
 
+server.listen(app.get('port'), function () {
+    console.log("Express server listening on port " + app.get('port'));
+});
+
+var io = require('socket.io').listen(server);
+
 app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/api/account/:session', api.account);
@@ -50,23 +59,54 @@ app.get('/api/image/:session/:id', api.getImage);
 app.get('/api/image/:session/:id/small', api.getImageSmall);
 app.get('/api/enqueue/:session/:id', api.enqueue);
 app.get('/api/playlist/:session', api.getPlaylist);
-app.get('/login',login.index);
-app.get('/login/response',login.oauth);
-app.get('/client',client.index);
-app.get('/client/mobile',client.mobile);
-app.get('/client/station',client.station);
-app.get('/tv/:session', function (req, res){
-    res.render("../build/tv",{'session': req.param('session'), 'host': req.host+":"+app.get('port') });
+app.get('/login', login.index);
+app.get('/login/response', login.oauth);
+app.get('/client', client.index);
+app.get('/client/mobile', client.mobile);
+app.get('/client/station', client.station);
+app.get('/tv/:session', function (req, res) {
+    var address = "/" + req.param('session');
+
+    if (!registered[address]) {
+        registered[address] = true;
+        console.log("New Adress: "+address);
+        io.of(address).on('connection', function (socket) {
+
+            socket.on('nextsong', function (data) {
+                api.playlist.removeFirst(data);
+                console.log("Next Song EVENT");
+                var ioObject = {};
+                ioObject['everyone'] = "in";
+                ioObject[address] = "will get";
+                socket.broadcast.emit('next', ioObject);
+            });
+            socket.on('disconnect', function () {
+
+            })
+
+            api.sendEnqueue = function (data) {
+                console.log("Event Enqueue: " + data);
+                var ioObject = {};
+                ioObject['everyone'] = "in";
+                ioObject[address] = data;
+                socket.broadcast.emit('enqueue', ioObject);
+            }
+
+        });
+    }
+
+    res.render("../build/tv", {'session': req.param('session'), 'host': req.host + ":" + app.get('port') });
 })
-app.get('/:session', function (req, res){
-    res.render("../build/mobile",{'session': req.param('session'), 'host': req.host+":"+app.get('port') });
+app.get('/:session', function (req, res) {
+    res.render("../build/mobile", {'session': req.param('session'), 'host': req.host + ":" + app.get('port') });
 })
 
+var registered = {};
 var store = {};
 
 var data = [];
 
-store.set = function(key, value) {
+store.set = function (key, value) {
     data[key] = value;
 }
 
@@ -75,11 +115,11 @@ store.get = function (key) {
 }
 
 
-MongoClient.connect("mongodb://localhost:27017/couchtape", function(err, db) {
-    if(!err) {
+MongoClient.connect("mongodb://localhost:27017/couchtape", function (err, db) {
+    if (!err) {
 
-        db.collection('playlist', function(colError, collection) {
-            collection.ensureIndex({'ts':1});
+        db.collection('playlist', function (colError, collection) {
+            collection.ensureIndex({'ts': 1});
         })
 
         console.log("Connected to Database");
@@ -91,44 +131,6 @@ MongoClient.connect("mongodb://localhost:27017/couchtape", function(err, db) {
         api.db = db;
         api.get = store.get;
 
-
-
-        var server = http.createServer(app);
-        server.listen(app.get('port'), function () {
-            console.log("Express server listening on port " + app.get('port'));
-        });
-
-        var io = require('socket.io').listen(server);
-
-        var connections = [];
-
-        io.sockets.on('connection', function (socket) {
-            connections[socket.sessionid] = socket;
-            socket.on('my other event', function (data) {
-                console.log(data);
-            });
-            socket.on('nextsong', function (data) {
-                api.playlist.removeFirst(data);
-                for (var user in connections){
-                    console.log("Next Song EVENT");
-                    connections[user].emit('next');
-                }
-            });
-            socket.on('disconnect', function() {
-
-            })
-
-            api.sendEnqueue = function(data) {
-                console.log("Event Enqueue: " + data);
-
-                for (var user in connections){
-                    try {
-                        connections[user].emit('enqueue', data);
-                    } catch (e) {}
-                }
-            }
-
-        });
 
     }
 });
