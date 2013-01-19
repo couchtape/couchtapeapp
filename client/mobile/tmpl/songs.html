@@ -1,5 +1,10 @@
 <ul>
   <li ng-repeat="song in songs">
-  <img ng-src="{{song.thumb}}" width="100"> {{song.title}} - {{song.artist}}
+    <figure>
+    <img ng-src="{{song.thumb}}" width="100"> 
+    <figcaption> 
+      <h4>{{song.title}} - {{song.artist}}</h4>
+      <a href="#">Zur Playlist hinzufügen</a>
+    </figcaption>
   </li>
 </ul>

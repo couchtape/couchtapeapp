@@ -2,7 +2,7 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     watch: {
-      files: ['client/*'],
+      files: ['client/**'],
       tasks: 'build:mobile build:tv'
     },
 
