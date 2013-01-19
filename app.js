@@ -41,11 +41,12 @@ app.configure('development', function () {
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-app.get('/api/account', api.account);
-app.get('/api/tapes', api.tapes);
-app.get('/api/files', api.files);
-app.get('/api/artists', api.artists);
+app.get('/api/account/:session', api.account);
+app.get('/api/tapes/:session', api.tapes);
+app.get('/api/files/:session', api.files);
+app.get('/api/artists/:session', api.artists);
 app.get('/api/get/:session/:id', api.get);
+app.get('/api/image/:session/:id', api.getImage);
 app.get('/login',login.index);
 app.get('/login/response',login.oauth);
 app.get('/client',client.index);
