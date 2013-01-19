@@ -1,3 +1,6 @@
+var doctape = require('../dtapi.js').api,
+    datastore = require('../server/database/DataStore.js');
+
 var api = module.export = exports;
 
 api.db = {};
@@ -18,7 +21,18 @@ api.getItemsCollection = function(session,cb) {
 
 api.account = function(){};
 api.tapes = function(){};
-api.file = function(req, res){
+api.files = function(req, res){
     api.db.collection('items')
 };
+
+api.get = function(req, res){
+    var id = req.param('id');
+    console.log ("request: " + req.param('id') + " - "+ req.param('session'));
+    datastore.getToken(req.param('session'), function(err, data){
+        doctape.oauth_exchange(data);
+        doctape.downloadStream(id,'original', res);
+    })
+};
+
+
 api.artists = function(){};

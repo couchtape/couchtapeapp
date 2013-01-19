@@ -31,7 +31,7 @@ app.configure(function () {
     app.use(express.cookieParser('couchtape-xxda561sJJ'));
     app.use(express.session());
     app.use(app.router);
-    app.use(express.static(path.join(__dirname, 'public')));
+    app.use(express.static(path.join(__dirname, 'build')));
 });
 
 
@@ -43,8 +43,9 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/api/account', api.account);
 app.get('/api/tapes', api.tapes);
-app.get('/api/file', api.file);
+app.get('/api/files', api.files);
 app.get('/api/artists', api.artists);
+app.get('/api/get/:session/:id', api.get);
 app.get('/login',login.index);
 app.get('/login/response',login.oauth);
 app.get('/client',client.index);
