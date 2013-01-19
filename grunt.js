@@ -3,7 +3,7 @@ module.exports = function (grunt) {
   grunt.initConfig({
     watch: {
       files: ['client/*'],
-      tasks: 'concat'
+      tasks: 'build:mobile build:tv'
     },
 
     concat: {
@@ -56,8 +56,9 @@ module.exports = function (grunt) {
       },
       tv: {
         files: {
-            "build/tv/img/": ["client/default/img/**"],
-            'build/tv.html': 'client/tv/tv.html'
+          "build/tv/img/": ["client/default/img/**"],
+          'build/tv.html': 'client/tv/tv.html',
+          'build/tv/tmpl/': 'client/tv/tmpl/*'
         }
       }
     }
@@ -66,6 +67,6 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-contrib');
 
-  grunt.registerTask('build-mobile', 'clean:mobile concat:mobile less:mobile copy:mobile copy:lib');
-  grunt.registerTask('build-tv', 'clean:tv concat:tv less:tv copy:tv copy:lib');
+  grunt.registerTask('build:mobile', 'clean:mobile concat:mobile less:mobile copy:mobile copy:lib');
+  grunt.registerTask('build:tv', 'clean:tv concat:tv less:tv copy:tv copy:lib');
 };
