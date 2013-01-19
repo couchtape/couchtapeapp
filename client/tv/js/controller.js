@@ -183,7 +183,7 @@ function playlistCtrl($scope, $document, CouchtapeService) {
         audio = document.getElementById('music');
         audio.play();
         audio.addEventListener('ended', function () {
-            next();
+            nextSong();
         });
     }
 
@@ -191,7 +191,8 @@ function playlistCtrl($scope, $document, CouchtapeService) {
 
     var songId = 0;
 
-    function next() {
+    function nextSong() {
+        next();
         audio.pause();
         console.dir(audio);
         console.log('next');
@@ -256,7 +257,7 @@ function playlistCtrl($scope, $document, CouchtapeService) {
     });
 
     $scope.next = function () {
-        next();
+        nextSong();
     };
 
     //init();
