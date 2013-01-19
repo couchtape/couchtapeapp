@@ -35,6 +35,9 @@ ds.init = function (sessionname, code) {
 
                     })
                 })
+                ds.db.collection('playlist', function (err, collection) {
+                    collection.remove({'session': sessionname})
+                })
 
             }
         })
