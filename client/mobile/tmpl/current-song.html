@@ -1,14 +1,8 @@
 <div class="scroll-h">
-<figure class="current-song group">
-  <img ng-src="{{song.thumb}}" alt="album.cover">
-  <figcaption>{{song.artist}} - {{song.title}}</figcaption>
-</figure>
-
-
-<ul class="current-playlist">
-  <li ng-repeat="song in playlist" class="group">
-    <img ng-src="{{song.thumb}}" alt=album-cover height=40>
-    <span>{{song.artist}} - {{song.title}}</span>
-  </li>
-</ul>
+  <ul class="current-playlist group">
+    <li ng-repeat="song in playlist" class="group">
+      <img ng-src="{{song.img}}" alt=album-cover>
+      <span>{{song.title}} - {{song.artist}} </span>
+    </li>
+  </ul>
 </div>

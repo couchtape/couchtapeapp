@@ -69,6 +69,41 @@ header {
   margin: 0;
   padding: 0;
   list-style: none;
+
+  li {
+    margin-top: 2em;
+    position: relative;
+
+    &:first-child {
+      margin-top: 1em;
+    }
+  }
+
+  .add {
+    position: absolute;
+    top: 3em;
+    left: 2em;
+    width: 3em;
+    background: rgba(255, 255, 255, 0.3);
+    text-shadow: 1px 1px 1px #000;
+    color: #fff;
+    font-weight: bold;
+    padding: 0.4em;
+    border-radius: 0.3em;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  }
+
+  img {
+    display: block;
+    width: 150px;
+    height: 150px;
+    margin: auto;
+  }
+
+  figcaption {
+    text-align: center;
+    margin-top: 0.5em;
+  }
 }
 
 .scroll-h {
@@ -102,13 +137,34 @@ header {
   padding: 0;
 
   margin-top: 1em;
-  border-top: 5px solid rgba(0, 0, 0, 0.3);
 
   list-style: none;
 
   li {
+
+    &:first-child {
+
+      border-bottom: 5px solid rgba(0, 0, 0, 0.3);
+
+      padding: 0 1em 1em 1em;
+      img {
+        display: block;
+        width: 120px;
+        height: 120px;
+        float: left;
+        -webkit-box-reflect: below 0 -webkit-linear-gradient(rgba(255, 255, 255, 0) 60%, rgba(255, 0, 0, 0.1));
+      }
+
+      figcaption {
+        float: left;
+        margin-left: 1em;
+      }
+    }
+
     img {
       float: left;
+      width: 40px;
+      height: 40px;
     }
 
     span {
