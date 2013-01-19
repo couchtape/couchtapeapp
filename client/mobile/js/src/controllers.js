@@ -1,12 +1,18 @@
-angular.module('couchtapeParty').controller('CurrentSongCtrl', ['$scope', 'CouchtapeService', function ($scope, CouchtapeService) {
+angular.module('couchtapeParty').controller('CurrentSongCtrl', ['$document', '$scope', 'CouchtapeService', function ($document, $scope, CouchtapeService) {
   var promise = CouchtapeService.getPlaylist();
-  var playlist = [];
+  var $scope.playlist = [];
+
+  $scope.setupSocketFunc = function () {
+    document.onNextSong = function () {
+      console.log('haLLO');
+      $scope.playlist.shift();
+    };
+  };
 
   $scope.song = CouchtapeService.getCurrentSong();
 
   promise.then(function (data) {
     $scope.playlist = data;
-    console.dir($scope.playlist);
   }, function (reason) {
     console.log(reason);
   });

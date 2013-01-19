@@ -82,7 +82,7 @@ function playlistCtrl($scope) {
 
     $scope.songs = [
         {
-            "img": "/api/image/markusmeineke/a62960e5-e0c7-4a98-8344-da6608c802da",
+            "img": "/api/image/"+CONFIG.session+"/a62960e5-e0c7-4a98-8344-da6608c802da",
             //"file": "http://gp.lc/01 All My Life.mp3",
             "file": "http://gp.lc/04 Dazwischen 2.mp3",
             //"file": "/api/get/markusmeineke/a62960e5-e0c7-4a98-8344-da6608c802da",
@@ -90,7 +90,7 @@ function playlistCtrl($scope) {
             "artist": "Cat Power",
             "class": "",
             "id": "a62960e5-e0c7-4a98-8344-da6608c802da",
-            "session": "markusmeineke",
+            "session": CONFIG.session,
             "_id": "50fade7b3fb1560f16000001"
         }
     ];

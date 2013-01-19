@@ -1,7 +1,7 @@
-<div class="scroll-h">
+<div class="scroll-h" ng-init="setupSocketFunc()">
   <ul class="current-playlist group">
     <li ng-repeat="song in playlist" class="group">
-      <img ng-src="{{song.img}}" alt=album-cover>
+      <img ng-src="{{song.img}}/small" alt=album-cover>
       <span>{{song.title}} - {{song.artist}} </span>
     </li>
   </ul>
