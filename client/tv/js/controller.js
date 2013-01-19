@@ -72,6 +72,7 @@ function playlistCtrl($scope) {
             source.loop = true;
             source.noteOn(0);
             source.gain.value = 1;
+            document.getElementById('view1').style.display = '';
 
             window.clearInterval(interval);
             interval = window.setInterval(function () {
@@ -111,28 +112,52 @@ function playlistCtrl($scope) {
         // setTimeout(draw, 0);
         window.requestAnimationFrame(draw);
     }
-    var first = true;
+    var songId = 0;
 
     function next() {
 
         source.gain.value = 0;
-        if (!first && $scope.songs.length !== 0) {
-            $scope.songs.shift();
-        }
         console.log($scope.songs);
 
-        first = false;
 
         if ($scope.songs.length === 0) {return;}
 
-        loadSample($scope.songs[0].file);
 
         window.setTimeout(function () {
             $scope.$apply(function () {
-                $scope.songs[0].class = 'active';
-                $scope.currentCover = $scope.songs[0].img;
+                $scope.songs[0].class = 'active hide';
+                $scope.songs[0].id = 'hide-it';
+
+                $scope.songs[songId].id = '0';
+                $scope.songs[songId].class = 'active';
+                $scope.currentCover = $scope.songs[songId].img;
+
+                window.setTimeout(function () {
+
+                    var el = document.getElementById('hide-it');
+                    if (el) {
+                        el.style.marginTop = '-' + el.clientHeight + 'px';
+                        el.style.opacity = 0;
+                        var count = 0;
+                        el.addEventListener('webkitTransitionEnd', function () {
+                            if (count === 0) {
+                                console.log('webkitTransitionEnd');
+                                console.log('tv/mp3/' + $scope.songs[songId].file);
+                                loadSample('tv/mp3/' + $scope.songs[songId].file);
+                                $scope.$apply(function () {
+                                    $scope.songs.shift();
+                                });
+                            }
+                            count++;
+                        }, false);
+                    } else {
+                        loadSample('tv/mp3/' + $scope.songs[songId].file);
+                    }
+                    songId = 1;
+                });
             });
         });
+
     }
     var interval;
 
@@ -171,38 +196,43 @@ function playlistCtrl($scope) {
     $scope.songs = [
     {
         img: 'tv/img/turmstrasse.jpg',
-        file: 'http://172.16.3.12:3000/api/get/frankyhill/786c7aa3-105a-4302-b68e-77c69981c885',
+        file: '04 Dazwischen 2.mp3',
         title: 'Dazwischen 2',
         artist: 'Kollektiv Turmstrasse',
-        class: ''
+        class: '',
+        id: ''
     },
     {
         img: 'tv/img/one-by-one.jpg',
         file: '01 All My Life.mp3',
         title: 'All My Live',
         artist: 'Foo Fighters',
-        class: ''
+        class: '',
+        id: ''
     },
     {
         img: 'tv/img/wasting-light.jpg',
         file: '01 Bridge Burning.mp3',
         title: 'Bridge Burning',
         artist: 'Foo Fighters',
-        class: ''
+        class: '',
+        id: ''
     },
     {
         img: 'tv/img/cat-power-sun.jpg',
         file: '01 Cherokee.mp3',
         title: 'Cherokee',
         artist: 'Cat Power',
-        class: ''
+        class: '',
+        id: ''
     },
     {
         img: 'tv/img/foo-fighters-echoes-silence-patience-grace.jpg',
         file: '01-The-Pretender.mp3',
         title: 'The Pretender',
         artist: 'Foo Fighters',
-        class: ''
+        class: '',
+        id: ''
     }
     ];
 
