@@ -1,4 +1,7 @@
 var socket = io.connect("/");
+socket.on('connect', function(){
+    console.log("Connected");
+})
 
 socket.on('enqueue', function (data) {
     console.log(data);
