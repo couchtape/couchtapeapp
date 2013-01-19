@@ -65,6 +65,11 @@ app.get('/:session', function (req, res){
 
 MongoClient.connect("mongodb://localhost:27017/couchtape", function(err, db) {
     if(!err) {
+
+        db.collection('playlist', function(colError, collection) {
+            collection.ensureIndex({'ts':1});
+        })
+
         console.log("Connected to Database");
 
         login.db = db;
@@ -77,12 +82,34 @@ MongoClient.connect("mongodb://localhost:27017/couchtape", function(err, db) {
 
         var io = require('socket.io').listen(server);
 
+        var connections = [];
 
         io.sockets.on('connection', function (socket) {
-            socket.emit('news', { hello: 'world' });
+            connections[socket.sessionid] = socket;
             socket.on('my other event', function (data) {
                 console.log(data);
             });
+            socket.on('nextsong', function (data) {
+                api.playlist.removeFirst(data);
+                for (var user in connections){
+                    console.log("Next Song EVENT");
+                    connections[user].emit('next', "ffff");
+                }
+            });
+            socket.on('disconnect', function() {
+                connections[socket.sessionid] = null;
+            })
+
+            api.sendEnqueue = function(data) {
+                console.log("Event Enqueue: " + data);
+
+                for (var user in connections){
+                    try {
+                        connections[user].emit('enqueue', data);
+                    } catch (e) {}
+                }
+            }
+
         });
 
     }
