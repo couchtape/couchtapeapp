@@ -26,19 +26,22 @@ login.oauth = function (req, res) {
             "username": data.username,
             "oauth": code
         }
+        login.db.collection('playlist', function (err, collection) {
+            collection.remove({'session': data.username}, function() {
+                login.db.collection('sessions', function (err, col) {
+                    col.remove({'username': data.username}, function() {
+                        col.insert(store, function () {
+                            res.redirect('/tv/' + data.username);
+                            datastore.db = login.db;
+                            datastore.get = login.get;
+                            datastore.init(data.username, code);
+                        });
 
-        login.db.collection('sessions', function (err, col) {
-            col.remove({'username': data.username}, function() {
-                col.insert(store, function () {
-                    res.redirect('/tv/' + data.username);
-                    datastore.db = login.db;
-                    datastore.get = login.get;
-                    datastore.init(data.username, code);
-                });
+                    });
 
-            });
+                })
 
+            })
         })
-
     })
 }
