@@ -6,9 +6,9 @@
 
 
 <ul class="current-playlist">
-  <li ng-repeat="song in playlist">
+  <li ng-repeat="song in playlist" class="group">
     <img ng-src="{{song.thumb}}" alt=album-cover height=40>
-    {{song.artist}} - {{song.title}}
+    <span>{{song.artist}} - {{song.title}}</span>
   </li>
 </ul>
 </div>

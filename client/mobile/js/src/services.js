@@ -31,7 +31,7 @@ angular.module('couchtapeParty').service('CouchtapeService', ['$http', '$q', 'Pl
 
 
 angular.module('couchtapeParty').factory('Playlist', ['Songs', function (Songs) {
-  return Songs.slice(0, 3);
+  return Songs.slice(0, 8);
 }]);
 
 angular.module('couchtapeParty').value('Artists', [
