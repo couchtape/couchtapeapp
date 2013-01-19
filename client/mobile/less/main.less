@@ -2,6 +2,13 @@
 @import "default/less/normalize.less";
 @import "default/less/structure.less";
 
+
+.group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 a {
   text-decoration: none;
 }
@@ -57,4 +64,37 @@ header {
 
 .h-scroll {
   overflow-x: scroll;
+}
+
+
+.current-song {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 1em;
+  img {
+    display: block;
+    width: 150px;
+    height: 150px;
+    float: left;
+    -webkit-box-reflect: below 0 -webkit-linear-gradient(rgba(255, 255, 255, 0) 60%, rgba(255, 0, 0, 0.1));
+  }
+
+  figcaption {
+    float: left;
+    margin-left: 1em;
+  }
+}
+
+.current-playlist {
+  margin: 0;
+  padding: 0;
+
+  margin-top: 1em;
+  border-top: 5px solid rgba(0, 0, 0, 0.3);
+
+  list-style: none;
+
+  li {
+
+  }
 }
