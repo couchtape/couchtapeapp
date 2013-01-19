@@ -7,6 +7,7 @@ Enumerable = require('linq');
 var api = module.export = exports;
 
 api.db = {};
+api.sendEnqueue = function(){};
 
 api.getItemsCollection = function (cb) {
 
@@ -136,6 +137,7 @@ api.playlist.enqueue = function (session, id) {
                 }
 
                 playlistCollection.insert(playlistItem);
+                api.sendEnqueue(playlistItem);
 
             });
         });

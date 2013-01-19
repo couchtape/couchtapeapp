@@ -93,6 +93,17 @@ MongoClient.connect("mongodb://localhost:27017/couchtape", function(err, db) {
             socket.on('disconnect', function() {
                 connections[socket.sessionid] = null;
             })
+
+            api.sendEnqueue = function(data) {
+                console.log("Event Enqueue: " + data);
+
+                for (var user in connections){
+                    try {
+                        connections[user].emit('enqueue', data);
+                    } catch (e) {}
+                }
+            }
+
         });
 
     }
