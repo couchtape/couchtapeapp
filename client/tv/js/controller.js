@@ -195,9 +195,9 @@ function playlistCtrl($scope) {
 
     $scope.songs = [
     {
-        img: 'tv/img/turmstrasse.jpg',
-        file: '04 Dazwischen 2.mp3',
-        title: 'Dazwischen 2',
+        img: '/api/image/frankyhill/718654cc-a40f-4dea-8cda-7c52328c2118',
+        file: '/api/get/frankyhill/718654cc-a40f-4dea-8cda-7c52328c2118',
+        title: 'discopolis - committed to sparkle motion',
         artist: 'Kollektiv Turmstrasse',
         class: '',
         id: ''

@@ -358,7 +358,7 @@
    * @param {function (Object, Object=)} cb
    */
   DoctapeCore.prototype.list = function (cb) {
-    _get_authorized.call(this, '/doc',
+    _get_authorized.call(this, '/doc?include_meta',
                     function (err, data) {
       if (err) { return cb(err); }
       data = JSON.parse(data);
