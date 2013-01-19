@@ -13,8 +13,8 @@ socket.on('next', function (data) {
     }
 });
 
-function next(data) {
-    socket.emit('nextsong', data);
+function next() {
+    socket.emit('nextsong', CONFIG.session);
 }
 
 

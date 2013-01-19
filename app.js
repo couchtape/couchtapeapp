@@ -65,6 +65,11 @@ app.get('/:session', function (req, res){
 
 MongoClient.connect("mongodb://localhost:27017/couchtape", function(err, db) {
     if(!err) {
+
+        db.collection('playlist', function(colError, collection) {
+            collection.ensureIndex({'ts':1});
+        })
+
         console.log("Connected to Database");
 
         login.db = db;
@@ -85,6 +90,7 @@ MongoClient.connect("mongodb://localhost:27017/couchtape", function(err, db) {
                 console.log(data);
             });
             socket.on('nextsong', function (data) {
+                api.playlist.removeFirst(data);
                 for (var user in connections){
                     console.log("Next Song EVENT");
                     connections[user].emit('next', "ffff");
