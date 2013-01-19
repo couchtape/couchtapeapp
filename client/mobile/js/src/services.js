@@ -11,21 +11,40 @@ angular.module('couchtapeParty').service('CouchtapeService', ['$http', '$q', 'Pl
     return deferred.promise;
   };
 
+  var addSong2Playlist = function (id) {
+    var deferred = $q.defer();
+
+    $http.get('/api/enqueue/' + CONFIG.session + '/' + id).success(function (data) {
+      deferred.resolve(data);
+    }).error(function (reason) {
+      deferred.reject(reason);
+    });
+    return deferred.promise;
+  }
 
   return {
     getCurrentSong: function () {
       return Songs[0];
     },
-
+// /api/playlist/session/
     getPlaylist: function () {
-      return Playlist;
+      var deferred = $q.defer();
+
+      $http.get('/api/playlist/' + CONFIG.session).success(function (data) {
+        deferred.resolve(data);
+      }).error(function (reason) {
+        deferred.reject(reason);
+      });
+
+      return deferred.promise;
     },
 
     getArtists: function () {
       return Artists;
     },
 
-    getSongs: getSongs
+    getSongs: getSongs,
+    addSong2Playlist: addSong2Playlist
   };
 }]);
 

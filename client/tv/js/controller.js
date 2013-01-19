@@ -1,4 +1,153 @@
-angular.module('twitter', ['ngResource']);
+angular.module('couchtapeParty', ['ngResource']);
+
+angular.module('couchtapeParty').service('CouchtapeService', ['$http', '$q', 'Playlist', 'Songs', 'Artists', function ($http, $q, Playlist, Songs, Artists) {
+
+    var getSongs = function () {
+        var deferred = $q.defer();
+
+        $http.get('/api/files/'+CONFIG.session).success(function (data, status, headers, config) {
+            deferred.resolve(data);
+        }).error(function (data , status, headers, config) {
+                deferred.reject(data);
+            });
+        return deferred.promise;
+    };
+
+    var addSong2Playlist = function (id) {
+        var deferred = $q.defer();
+
+        $http.get('/api/enqueue/' + CONFIG.session + '/' + id).success(function (data) {
+            deferred.resolve(data);
+        }).error(function (reason) {
+                deferred.reject(reason);
+            });
+        return deferred.promise;
+    }
+
+    return {
+        getCurrentSong: function () {
+            return Songs[0];
+        },
+// /api/playlist/session/
+        getPlaylist: function () {
+            var deferred = $q.defer();
+
+            $http.get('/api/playlist/' + CONFIG.session).success(function (data) {
+                deferred.resolve(data);
+            }).error(function (reason) {
+                    deferred.reject(reason);
+                });
+
+            return deferred.promise;
+        },
+
+        getArtists: function () {
+            return Artists;
+        },
+
+        getSongs: getSongs,
+        addSong2Playlist: addSong2Playlist
+    };
+}]);
+
+
+angular.module('couchtapeParty').factory('Playlist', ['Songs', function (Songs) {
+    return Songs.slice(0, 8);
+}]);
+
+angular.module('couchtapeParty').value('Artists', [
+    {
+        id: 1,
+        name: 'Justice',
+        thumb: 'http://userserve-ak.last.fm/serve/_/23347675/Cross+justice__cover.jpg'
+    },
+    {
+        id: 2,
+        name: 'Daftpunk',
+        thumb: 'http://www.fan-lexikon.de/musik/daft-punk/bilder/l/daft-punk-musique-vol-1-1993-2005-album-cover-16294.jpg'
+    },
+    {
+        id: 3,
+        name: 'Skrillex',
+        thumb: 'http://blog.rebellen.info/wp-content/uploads/2013/01/Skrillex-leaving-e1357245698733.jpg'
+    },
+    {
+        id: 4,
+        name: 'Glitchmob',
+        thumb: 'http://www.metatroniks.net/wp-content/uploads/2011/01/glitchmob1.jpg'
+    }
+]);
+
+angular.module('couchtapeParty').value('Songs', [
+    {
+        title: 'Phantom',
+        album: 'Cross Symbol',
+        artist: 'Justice',
+        year: '2007',
+        genre: 'Electronica',
+        duration: 'what?!',
+        thumb: 'http://userserve-ak.last.fm/serve/_/23347675/Cross+justice__cover.jpg'
+    },
+    {
+        title: 'P.A.R.T.Y',
+        album: 'Cross Symbol',
+        artist: 'Justice',
+        year: '2007',
+        genre: 'Electronica',
+        duration: 'what?!',
+        thumb: 'http://userserve-ak.last.fm/serve/_/23347675/Cross+justice__cover.jpg'
+    },
+
+    {
+        title: 'Waters of Nazareth',
+        album: 'Cross Symbol',
+        artist: 'Justice',
+        year: '2007',
+        genre: 'Electronica',
+        duration: 'what?!',
+        thumb: 'http://userserve-ak.last.fm/serve/_/23347675/Cross+justice__cover.jpg'
+    },
+
+    {
+        title: 'Genesis',
+        album: 'Cross Symbol',
+        artist: 'Justice',
+        year: '2007',
+        genre: 'Electronica',
+        duration: 'what?!',
+        thumb: 'http://userserve-ak.last.fm/serve/_/23347675/Cross+justice__cover.jpg'
+    },
+
+    {
+        title: 'Genesis',
+        album: 'Cross Symbol',
+        artist: 'Justice',
+        year: '2007',
+        genre: 'Electronica',
+        duration: 'what?!',
+        thumb: 'http://userserve-ak.last.fm/serve/_/23347675/Cross+justice__cover.jpg'
+    },
+
+    {
+        title: 'Genesis',
+        album: 'Cross Symbol',
+        artist: 'Justice',
+        year: '2007',
+        genre: 'Electronica',
+        duration: 'what?!',
+        thumb: 'http://userserve-ak.last.fm/serve/_/23347675/Cross+justice__cover.jpg'
+    },
+    {
+        title: 'Genesis',
+        album: 'Cross Symbol',
+        artist: 'Justice',
+        year: '2007',
+        genre: 'Electronica',
+        duration: 'what?!',
+        thumb: 'http://userserve-ak.last.fm/serve/_/23347675/Cross+justice__cover.jpg'
+    },
+]);
+
 
 function TwitterCtrl($scope, $resource) {
     $scope.twitter = $resource('https://api.twitter.com/1.1/search/:action',
@@ -17,7 +166,7 @@ function player($scope) {
 }
 
 
-function playlistCtrl($scope) {
+function playlistCtrl($scope, $document, CouchtapeService) {
 
 
     var analyser, canvas, canvasContext, audio;
@@ -38,39 +187,9 @@ function playlistCtrl($scope) {
         });
     }
 
-    $scope.songs = [
-        {
-            //"img": "/api/image/markusmeineke/a62960e5-e0c7-4a98-8344-da6608c802da/small",
-            "img": " ",
-            //"file": "http://gp.lc/01 All My Life.mp3",
-            "file": "http://gp.lc/04 Dazwischen 2.mp3",
-            //"file": "/api/get/markusmeineke/a62960e5-e0c7-4a98-8344-da6608c802da",
-            "title": "Cherokee",
-            "artist": "Cat Power",
-            "class": "",
-            "id": "a62960e5-e0c7-4a98-8344-da6608c802da",
-            "session": "markusmeineke",
-            "_id": "50fade7b3fb1560f16000001"
-        }
-,
-        {
-            "img": "/api/image/markusmeineke/a62960e5-e0c7-4a98-8344-da6608c802da",
-            "file": "http://gp.lc/01 All My Life.mp3",
-            //"file": "/api/get/markusmeineke/a62960e5-e0c7-4a98-8344-da6608c802da",
-            "title": "Cherokee",
-            "artist": "Cat Power",
-            "class": "",
-            "id": "a62960e5-e0c7-4a98-8344-da6608c802da",
-            "session": "markusmeineke",
-            "_id": "50fade7b3fb1560f16000001"
-        }
-
-    ];
+    $scope.songs = [];
 
     var songId = 0;
-
-    $scope.songs[0].class = 'active';
-    $scope.currentSong = $scope.songs[0];
 
     function next() {
         audio.pause();
@@ -116,7 +235,25 @@ function playlistCtrl($scope) {
 
     }
 
-    console.log($scope.currentSong);
+    var promise = CouchtapeService.getPlaylist();
+    $scope.playlist = [];
+
+    $scope.setupSocketFunc = function () {
+        document.onNextSong = function () {
+            console.log('haLLO');
+            $scope.$apply(function () {
+                $scope.playlist.shift();
+            });
+        };
+    };
+
+    promise.then(function (data) {
+        $scope.songs = data;
+        $scope.songs[0].class = 'active';
+        $scope.currentSong = $scope.songs[0];
+    }, function (reason) {
+        console.log(reason);
+    });
 
     $scope.next = function () {
         next();

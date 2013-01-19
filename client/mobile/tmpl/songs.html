@@ -2,10 +2,12 @@
   <ul class="song-list">
     <li ng-repeat="song in songs">
       <figure>
-      <img ng-src="{{song.image}}" width="100"> 
-      <figcaption> 
-      <span>{{song.name}} - {{song.meta.artist}}</span>
-      </figcaption>
+        <img ng-src="{{song.image}}/small" width="100"> 
+        <figcaption> 
+        <span>{{song.name}} - {{song.meta.artist}}</span>
+        </figcaption>
+      </figure>
+      <a ng-click="addSong2Playlist(song.id)" class="add">Add to Playlist</a>
     </li>
   </ul>
 </div>
