@@ -3,8 +3,14 @@ angular.module('couchtapeParty').controller('CurrentSongCtrl', ['$document', '$s
   $scope.playlist = [];
 
   $scope.setupSocketFunc = function () {
+    document.onEnqueue = function (data) {
+      $scope.$apply(function () {
+        $scope.playlist.push(data);
+      });
+    };
+
     document.onNextSong = function () {
-      console.log('haLLO');
+      console.log('Trigger nex song');
       $scope.$apply(function () {
         $scope.playlist.shift();
       });
