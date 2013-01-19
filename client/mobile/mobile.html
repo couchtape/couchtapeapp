@@ -9,21 +9,18 @@
   </head>
 
   <body ng-app=couchtapeParty>
-    <header>
-      <h1>couchtape</h1>
-      <nav>
-        <ul>
-          <li><a href=#songs>Songs</a></li>
-          <li><a href=#current>Current Song</a></li>
-        </ul>
-      </nav>
-    </header>
-    <div ng-view id="main"></div>
-
-    <footer>
-
-    </footer>
-
+    <div id="wrap" class="box-v">
+      <header class="flex">
+        <h1>couchtape</h1>
+        <nav>
+          <ul>
+            <li><a href=#songs>Songs</a></li>
+            <li><a href=#current>Current Song</a></li>
+          </ul>
+        </nav>
+      </header>
+      <div id="main" class="flex flex-fill" ng-view></div>
+    </div>
   </body>
   <script src=vendor/angular.min.js></script>
   <script src=mobile/js/app.js></script>
