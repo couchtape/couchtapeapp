@@ -192,6 +192,10 @@ function playlistCtrl($scope, $document, CouchtapeService) {
     var songId = 0;
 
     function nextSong() {
+        if (!audio) {
+            console.log('Audio not ready now! Please wait a moment!');
+            return;
+        }
         next();
         audio.pause();
         console.dir(audio);
@@ -274,6 +278,10 @@ function playlistCtrl($scope, $document, CouchtapeService) {
             if (start) {
                 $scope.songs[0].class = 'active';
                 $scope.currentSong = $scope.songs[0];
+                audio.load();
+                window.setTimeout(function () {
+                    audio.play();
+                }, 1);
             }
         });
     };
