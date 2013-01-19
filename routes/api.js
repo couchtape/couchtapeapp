@@ -39,7 +39,7 @@ api.files = function (req, res) {
         data.find({'user': req.param("session"), 'type': 'audio'}).toArray(function (err, mongoData) {
             var result = Enumerable.From(mongoData).Select(function (value, index) {
                 value.link = "/api/get/" + req.param("session") + "/" + value.id;
-                value.link = "/api/image/" + req.param("session") + "/" + value.id;
+                value.image = "/api/image/" + req.param("session") + "/" + value.id;
                 return value;
             }).ToArray();
             res.send(result);
