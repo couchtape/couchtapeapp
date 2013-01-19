@@ -42,10 +42,16 @@ module.exports = function (grunt) {
     },
 
     copy: {
+      lib: {
+        files: {
+          'build/vendor/': 'client/default/js/libs/angular/angular.min.js'
+        }
+      },
       mobile: {
         files: {
           "build/mobile/img/": ["client/default/img/**"],
-          'build/mobile.html': 'client/mobile/mobile.html'
+          'build/mobile.html': 'client/mobile/mobile.html',
+          'build/mobile/tmpl/': 'client/mobile/tmpl/*'
         }
       },
       tv: {
@@ -60,6 +66,6 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-contrib');
 
-  grunt.registerTask('build-mobile', 'clean:mobile concat:mobile less:mobile copy:mobile');
-  grunt.registerTask('build-tv', 'clean:tv concat:tv less:tv copy:tv');
+  grunt.registerTask('build-mobile', 'clean:mobile concat:mobile less:mobile copy:mobile copy:lib');
+  grunt.registerTask('build-tv', 'clean:tv concat:tv less:tv copy:tv copy:lib');
 };
