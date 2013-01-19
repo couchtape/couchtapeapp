@@ -57,7 +57,7 @@ module.exports = function (grunt) {
       tv: {
         files: {
             "build/tv/shaders/": ["client/tv/shaders/**"],
-            "build/tv/mp3/": ["client/tv/mp3/**"],
+            /*"build/tv/mp3/": ["client/tv/mp3/**"],*/
             "build/tv/img/": ["client/default/img/**"],
             'build/tv.html': 'client/tv/tv.html'
         }
@@ -67,6 +67,8 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib');
+
+  grunt.registerTask('default', 'build:mobile build:tv');
 
   grunt.registerTask('build:mobile', 'clean:mobile concat:mobile less:mobile copy:mobile copy:lib');
   grunt.registerTask('build:tv', 'clean:tv concat:tv less:tv copy:tv copy:lib');
