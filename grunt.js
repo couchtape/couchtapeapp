@@ -12,7 +12,7 @@ module.exports = function (grunt) {
         dest: 'build/mobile/js/app.js'
       },
       tv: {
-        src: ['client/default/js/libs/visualizer/events.js', 'client/default/js/libs/visualizer/o3d.js', 'client/default/js/libs/visualizer/cameracontroller.js', 'client/default/js/libs/visualizer/matrix4x4.js', 'client/default/js/libs/visualizer/visualizer.js', 'client/default/js/libs/visualizer/shader.js', 'client/default/js/libs/angular/angular.js', 'client/tv/js/*.js', 'client/tv/js/directives/*.js', 'client/default/js/libs/angular/angular-resource.js'],
+        src: ['client/default/js/libs/visualizer/events.js', 'client/default/js/libs/visualizer/o3d.js', 'client/default/js/src/socket.js', 'client/default/js/libs/visualizer/cameracontroller.js', 'client/default/js/libs/visualizer/matrix4x4.js', 'client/default/js/libs/visualizer/visualizer.js', 'client/default/js/libs/visualizer/shader.js', 'client/default/js/libs/angular/angular.js', 'client/tv/js/*.js', 'client/tv/js/directives/*.js', 'client/default/js/libs/angular/angular-resource.js'],
         dest: 'build/tv/js/app.js'
       }
     },
@@ -44,7 +44,8 @@ module.exports = function (grunt) {
     copy: {
       lib: {
         files: {
-          'build/vendor/': 'client/default/js/libs/angular/angular.min.js'
+          'build/vendor/': 'client/default/js/libs/angular/angular.min.js',
+          'build/vendor/': 'client/mobile/css/add2home.css'
         }
       },
       mobile: {

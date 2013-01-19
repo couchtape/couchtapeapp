@@ -47,6 +47,7 @@ app.get('/api/artists/:session', api.artists);
 app.get('/api/artists/files/:session/:artist', api.artists);
 app.get('/api/get/:session/:id', api.get);
 app.get('/api/image/:session/:id', api.getImage);
+app.get('/api/image/:session/:id/small', api.getImageSmall);
 app.get('/api/enqueue/:session/:id', api.enqueue);
 app.get('/api/playlist/:session', api.getPlaylist);
 app.get('/login',login.index);
@@ -58,7 +59,7 @@ app.get('/tv/:session', function (req, res){
     res.render("../build/tv",{'session': req.param('session'), 'host': req.host+":"+app.get('port') });
 })
 app.get('/:session', function (req, res){
-    res.render("../build/mobile",{'session': req.param('session')});
+    res.render("../build/mobile",{'session': req.param('session'), 'host': req.host+":"+app.get('port') });
 })
 
 
@@ -76,12 +77,33 @@ MongoClient.connect("mongodb://localhost:27017/couchtape", function(err, db) {
 
         var io = require('socket.io').listen(server);
 
+        var connections = [];
 
         io.sockets.on('connection', function (socket) {
-            socket.emit('news', { hello: 'world' });
+            connections[socket.sessionid] = socket;
             socket.on('my other event', function (data) {
                 console.log(data);
             });
+            socket.on('nextsong', function (data) {
+                for (var user in connections){
+                    console.log("Next Song EVENT");
+                    connections[user].emit('next', "ffff");
+                }
+            });
+            socket.on('disconnect', function() {
+                connections[socket.sessionid] = null;
+            })
+
+            api.sendEnqueue = function(data) {
+                console.log("Event Enqueue: " + data);
+
+                for (var user in connections){
+                    try {
+                        connections[user].emit('enqueue', data);
+                    } catch (e) {}
+                }
+            }
+
         });
 
     }

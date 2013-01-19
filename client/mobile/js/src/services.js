@@ -2,7 +2,7 @@ angular.module('couchtapeParty').service('CouchtapeService', ['$http', '$q', 'Pl
 
   var getSongs = function () {
     var deferred = $q.defer();
-    
+
     $http.get('/api/files/'+CONFIG.session).success(function (data, status, headers, config) {
       deferred.resolve(data);
     }).error(function (data , status, headers, config) {
@@ -31,7 +31,7 @@ angular.module('couchtapeParty').service('CouchtapeService', ['$http', '$q', 'Pl
 
 
 angular.module('couchtapeParty').factory('Playlist', ['Songs', function (Songs) {
-  return Songs.slice(0, 3);
+  return Songs.slice(0, 8);
 }]);
 
 angular.module('couchtapeParty').value('Artists', [

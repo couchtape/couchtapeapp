@@ -1,10 +1,10 @@
-<div class="h-scroll">
-  <ul>
+<div class="scroll-h">
+  <ul class="song-list">
     <li ng-repeat="song in songs">
       <figure>
       <img ng-src="{{song.image}}" width="100"> 
       <figcaption> 
-        <h4>{{song.name}}</h4>
+      <span>{{song.name}} - {{song.meta.artist}}</span>
       </figcaption>
     </li>
   </ul>

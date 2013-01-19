@@ -2,10 +2,15 @@
 @import "default/less/normalize.less";
 @import "default/less/structure.less";
 
+.group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 a {
   text-decoration: none;
 }
-
 
 header {
   h1 {
@@ -37,6 +42,7 @@ header {
     position: absolute;
     top: 50px;
     left: 8px;
+    z-index: 2;
     ul {
       margin: 0;
       padding: 0;
@@ -59,6 +65,12 @@ header {
   position: relative;
 }
 
+.song-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .scroll-h {
   overflow-x: scroll;
   width: 100%;
@@ -67,6 +79,47 @@ header {
 }
 
 
+.current-song {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 1em;
+  img {
+    display: block;
+    width: 150px;
+    height: 150px;
+    float: left;
+    -webkit-box-reflect: below 0 -webkit-linear-gradient(rgba(255, 255, 255, 0) 60%, rgba(255, 0, 0, 0.1));
+  }
+
+  figcaption {
+    float: left;
+    margin-left: 1em;
+  }
+}
+
+.current-playlist {
+  margin: 0;
+  padding: 0;
+
+  margin-top: 1em;
+  border-top: 5px solid rgba(0, 0, 0, 0.3);
+
+  list-style: none;
+
+  li {
+    img {
+      float: left;
+    }
+
+    span {
+      margin-top: 0.5em;
+      display: inline-block;
+      margin-left: 0.5em;
+    }
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  }
+}
 .login-box {
   background: rgba(0,0,0,.2);
   padding: 15px 20px 20px 20px;

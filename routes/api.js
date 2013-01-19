@@ -7,6 +7,7 @@ Enumerable = require('linq');
 var api = module.export = exports;
 
 api.db = {};
+api.sendEnqueue = function(){};
 
 api.getItemsCollection = function (cb) {
 
@@ -79,6 +80,15 @@ api.getImage = function (req, res) {
     })
 };
 
+api.getImageSmall = function (req, res) {
+    var id = req.param('id');
+    console.log("request: " + req.param('id') + " - " + req.param('session'));
+    datastore.getToken(req.param('session'), function (err, data) {
+        doctape.oauth_exchange(data);
+        doctape.downloadStream(id, 'thumb_120.jpg', res);
+    })
+};
+
 api.enqueue = function(req,res) {
     var session = req.param('session');
     var id = req.param('id');
@@ -127,6 +137,7 @@ api.playlist.enqueue = function (session, id) {
                 }
 
                 playlistCollection.insert(playlistItem);
+                api.sendEnqueue(playlistItem);
 
             });
         });
