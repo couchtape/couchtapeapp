@@ -1,12 +1,15 @@
-<figure>
-  <img ng-src="{{song.thumb}}" alt="album.cover" width="300">
-  <figcaption>{{song.artist}} - {{song.title}}</figcaption>
-</figure>
+<div class="scroll-h">
+  <figure>
+    <img ng-src="{{song.thumb}}" alt="album.cover" width="300">
+    <figcaption>{{song.artist}} - {{song.title}}</figcaption>
+  </figure>
 
 
-<ul>
-  <li ng-repeat="song in playlist">
-    <img ng-src="{{song.thumb}}" alt=album-cover height=40>
-    {{song.artist}} - {{song.title}}
-  </li>
-</ul>
+  <ul>
+    <li ng-repeat="song in playlist">
+      <img ng-src="{{song.thumb}}" alt=album-cover height=40>
+      {{song.artist}} - {{song.title}}
+    </li>
+  </ul>
+
+</div>
