@@ -204,8 +204,10 @@ function playlistCtrl($scope, $document, CouchtapeService) {
             $scope.$apply(function () {
                 $scope.songs[0].id = 'hide-it';
 
-                $scope.songs[1].class = 'active';
-                $scope.songs[1].id = '';
+                if ($scope.songs[1]) {
+                    $scope.songs[1].class = 'active';
+                    $scope.songs[1].id = '';
+                }
                 console.log('song classes');
 
                 window.setTimeout(function () {
@@ -220,11 +222,14 @@ function playlistCtrl($scope, $document, CouchtapeService) {
                             if (count === 0) {
                                 $scope.$apply(function () {
                                     $scope.songs.shift();
-                                    $scope.currentSong = $scope.songs[0];
-                                    audio.load();
-                                    window.setTimeout(function () {
-                                        audio.play();
-                                    }, 1);
+
+                                    if ($scope.songs.length > 0) {
+                                        $scope.currentSong = $scope.songs[0];
+                                        audio.load();
+                                        window.setTimeout(function () {
+                                            audio.play();
+                                        }, 1);
+                                    }
                                 });
                             }
                             count++;
@@ -249,12 +254,19 @@ function playlistCtrl($scope, $document, CouchtapeService) {
     };
 
     promise.then(function (data) {
-        $scope.songs = data;
-        $scope.songs[0].class = 'active';
-        $scope.currentSong = $scope.songs[0];
+        if (data.length) {
+            $scope.songs = data;
+            $scope.songs[0].class = 'active';
+            $scope.currentSong = $scope.songs[0];
+        }
     }, function (reason) {
         console.log(reason);
     });
+
+    document.onEnqueue = function (data) {
+        console.log('data', data);
+        $scope.songs.push(data);
+    };
 
     $scope.next = function () {
         nextSong();
