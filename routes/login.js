@@ -24,7 +24,7 @@ login.oauth = function(req,res) {
             col.remove({'username': data.username});
             col.insert(store);
 
-            res.redirect('/tv.html#session='+data.username);
+            res.redirect('/'+data.username);
             datastore.db = login.db;
             datastore.init(data.username);
         })
