@@ -52,7 +52,7 @@ api.tapes = function (req, res) {
 api.files = function (req, res) {
     api.getItemsCollection(function (err, data) {
 
-        data.find({'type': 'audio'}).toArray(function (err, mongoData) {
+        data.find({'user': req.param('session'), 'type': 'audio'}).toArray(function (err, mongoData) {
             var result = Enumerable.From(mongoData).Select(function (value, index) {
                 value.link = "/api/get/" + value.user + "/" + value.id;
                 value.image = "/api/image/" + value.user + "/" + value.id;

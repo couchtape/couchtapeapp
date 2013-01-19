@@ -111,7 +111,7 @@ MongoClient.connect("mongodb://localhost:27017/couchtape", function(err, db) {
                 api.playlist.removeFirst(data);
                 for (var user in connections){
                     console.log("Next Song EVENT");
-                    connections[user].emit('next', "ffff");
+                    connections[user].emit('next');
                 }
             });
             socket.on('disconnect', function() {
