@@ -47,6 +47,7 @@ app.get('/api/artists/:session', api.artists);
 app.get('/api/artists/files/:session/:artist', api.artists);
 app.get('/api/get/:session/:id', api.get);
 app.get('/api/image/:session/:id', api.getImage);
+app.get('/api/image/:session/:id/small', api.getImageSmall);
 app.get('/api/enqueue/:session/:id', api.enqueue);
 app.get('/api/playlist/:session', api.getPlaylist);
 app.get('/login',login.index);
