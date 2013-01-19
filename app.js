@@ -52,6 +52,9 @@ app.get('/login/response',login.oauth);
 app.get('/client',client.index);
 app.get('/client/mobile',client.mobile);
 app.get('/client/station',client.station);
+app.get('/tv/:session', function (req, res){
+    res.render("../build/tv",{'session': req.param('session')});
+})
 app.get('/:session', function (req, res){
     res.render("../build/mobile",{'session': req.param('session')});
 })
