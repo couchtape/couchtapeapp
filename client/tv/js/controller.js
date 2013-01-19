@@ -265,15 +265,17 @@ function playlistCtrl($scope, $document, CouchtapeService) {
 
     document.onEnqueue = function (data) {
         console.log('data', data);
-        var start = false;
-        if ($scope.songs.length === 0) {
-            start = true;
-        }
-        $scope.songs.push(data);
-        if (start) {
-            $scope.songs[0].class = 'active';
-            $scope.currentSong = $scope.songs[0];
-        }
+        $scope.$apply(function () {
+            var start = false;
+            if ($scope.songs.length === 0) {
+                start = true;
+            }
+            $scope.songs.push(data);
+            if (start) {
+                $scope.songs[0].class = 'active';
+                $scope.currentSong = $scope.songs[0];
+            }
+        });
     };
 
     $scope.next = function () {
