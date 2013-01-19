@@ -62,6 +62,18 @@ app.get('/:session', function (req, res){
     res.render("../build/mobile",{'session': req.param('session'), 'host': req.host+":"+app.get('port') });
 })
 
+var store = {};
+
+var data = [];
+
+store.set = function(key, value) {
+    data[key] = value;
+}
+
+store.get = function (key) {
+    return data[key];
+}
+
 
 MongoClient.connect("mongodb://localhost:27017/couchtape", function(err, db) {
     if(!err) {
@@ -73,7 +85,13 @@ MongoClient.connect("mongodb://localhost:27017/couchtape", function(err, db) {
         console.log("Connected to Database");
 
         login.db = db;
+        login.set = store.set;
+        login.get = store.get;
+
         api.db = db;
+        api.get = store.get;
+
+
 
         var server = http.createServer(app);
         server.listen(app.get('port'), function () {
