@@ -13,7 +13,6 @@ var express = require('express'),
     client = require('./routes/client'),
     request = require('request'),
     MongoClient = require('mongodb');
-;
 
 var app = express();
 var code;
@@ -45,6 +44,7 @@ app.get('/api/account/:session', api.account);
 app.get('/api/tapes/:session', api.tapes);
 app.get('/api/files/:session', api.files);
 app.get('/api/artists/:session', api.artists);
+app.get('/api/artists/files/:session/:artist', api.artists);
 app.get('/api/get/:session/:id', api.get);
 app.get('/api/image/:session/:id', api.getImage);
 app.get('/login',login.index);
@@ -61,11 +61,21 @@ MongoClient.connect("mongodb://localhost:27017/exampleDb", function(err, db) {
         login.db = db;
         api.db = db;
 
-        http.createServer(app).listen(app.get('port'), function () {
+        var server = http.createServer(app);
+        server.listen(app.get('port'), function () {
             console.log("Express server listening on port " + app.get('port'));
         });
+
+        var io = require('socket.io').listen(server);
+
+
+        io.sockets.on('connection', function (socket) {
+            socket.emit('news', { hello: 'world' });
+            socket.on('my other event', function (data) {
+                console.log(data);
+            });
+        });
+
     }
 });
-
-
 

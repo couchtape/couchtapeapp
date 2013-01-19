@@ -31,23 +31,25 @@ ds.init = function (sessionname) {
 
             }
         })
-
     })
 }
 
 ds.tryStore = function (collection, session, item) {
-    collection.count({id: item.id}, function (err, idCount) {
-        if (idCount !== 1) {
+    collection.find({id: item.id}).toArray(function (err, mongoItem) {
+        var store = {
+            user: session,
+            id: item.id,
+            tags: item.tags,
+            type: item.media_type,
+            name: item.name,
+            meta: item.meta
+        }
+        if (mongoItem.length == 0) {
             console.log("New Item: " + item.name + " {" + item.id + "}")
-            var store = {
-                user: session,
-                id: item.id,
-                tags: item.tags,
-                type: item.media_type,
-                name: item.name,
-                meta: item.meta
-            }
             collection.insert(store);
+        } else {
+            console.log("Updated Item: " + item.name + " {" + item.id + "}")
+            collection.update({'_id':mongoItem._id}, store);
         }
     })
 }
