@@ -236,9 +236,16 @@ function playlistCtrl($scope) {
     }
     ];
 
+    $scope.enqueue = function (data){
+
+    }
+
     $scope.next = function () {
         next();
     };
 
+    document.enqueue = $scope.enqueue;
     init();
 }
+
+

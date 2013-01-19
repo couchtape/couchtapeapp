@@ -77,12 +77,22 @@ MongoClient.connect("mongodb://localhost:27017/couchtape", function(err, db) {
 
         var io = require('socket.io').listen(server);
 
+        var connections = [];
 
         io.sockets.on('connection', function (socket) {
-            socket.emit('news', { hello: 'world' });
+            connections[socket.sessionid] = socket;
             socket.on('my other event', function (data) {
                 console.log(data);
             });
+            socket.on('nextsong', function (data) {
+                for (var user in connections){
+                    console.log("Next Song EVENT");
+                    connections[user].emit('next', "ffff");
+                }
+            });
+            socket.on('disconnect', function() {
+                connections[socket.sessionid] = null;
+            })
         });
 
     }

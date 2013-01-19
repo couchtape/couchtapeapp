@@ -1,6 +1,21 @@
-var socket = io.connect(CONFIG.host);
-console.log("gooo");
-socket.on('news', function (data) {
+var socket = io.connect("/");
+
+socket.on('enqueue', function (data) {
     console.log(data);
-    socket.emit('my other event', { my: 'data' });
+    if (document.onEnqueue) {
+        onEnqueue(data);
+    }
 });
+
+socket.on('next', function (data) {
+    if (document.onNextSong) {
+        onNextSong();
+    }
+});
+
+function next(data) {
+    socket.emit('nextsong', data);
+}
+
+
+
