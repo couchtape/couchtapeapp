@@ -1,11 +1,13 @@
 angular.module('couchtapeParty').controller('CurrentSongCtrl', ['$document', '$scope', 'CouchtapeService', function ($document, $scope, CouchtapeService) {
   var promise = CouchtapeService.getPlaylist();
-  var $scope.playlist = [];
+  $scope.playlist = [];
 
   $scope.setupSocketFunc = function () {
     document.onNextSong = function () {
       console.log('haLLO');
-      $scope.playlist.shift();
+      $scope.$apply(function () {
+        $scope.playlist.shift();
+      });
     };
   };
 
