@@ -1,13 +1,21 @@
 {
-  "name": "couchtape",
-  "title": "couchtape app",
-  "description": "Mediacenter deluxe",
-  "version": "0.1.0",
-  "dependencies": {
-    "grunt": "*",
-    "grunt-contrib": "*",
-    "express": "3.x",
-    "doctape": "*",
-    "socket.io": "*"
-  }
+    "name": "couchtape",
+    "title": "couchtape app",
+    "description": "Mediacenter deluxe",
+    "version": "0.1.0",
+    "scripts": {
+	"start": "node app"
+    },
+    "dependencies": {
+        "grunt": "*",
+        "grunt-contrib": "*",
+        "express": "3.0.6",
+        "doctape": "*",
+        "socket.io": "*",
+        "passport": "*",
+        "mongodb": "*",
+        "request": "*",
+        "underscore": "*",
+        "uinexpress": "*"
+    }
 }
