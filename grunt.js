@@ -44,7 +44,8 @@ module.exports = function (grunt) {
     copy: {
       lib: {
         files: {
-          'build/vendor/': 'client/default/js/libs/angular/angular.min.js'
+          'build/vendor/': 'client/default/js/libs/angular/angular.min.js',
+          'build/vendor/': 'client/mobile/css/add2home.css'
         }
       },
       mobile: {

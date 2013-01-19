@@ -2,7 +2,6 @@
 @import "default/less/normalize.less";
 @import "default/less/structure.less";
 
-
 .group:after {
   content: "";
   display: table;
@@ -44,6 +43,7 @@ header {
     position: absolute;
     top: 50px;
     left: 8px;
+    z-index: 2;
     ul {
       margin: 0;
       padding: 0;
@@ -62,8 +62,21 @@ header {
   }
 }
 
-.h-scroll {
+#main {
+  position: relative;
+}
+
+.song-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.scroll-h {
   overflow-x: scroll;
+  width: 100%;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
 }
 
 
@@ -96,5 +109,21 @@ header {
 
   li {
 
+  }
+}
+.login-box {
+  background: rgba(0,0,0,.2);
+  padding: 15px 20px 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  width: 400px;
+  margin: 20px auto 0 auto;
+
+  h1 {
+    margin-top: 0;
+    padding: 0;
+  }
+
+  a {
+    color: rgba(255,255,255,.4);
   }
 }
