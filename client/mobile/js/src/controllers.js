@@ -15,3 +15,16 @@ angular.module('couchtapeParty').controller('SongsCtrl', ['$scope', 'CouchtapeSe
 
   $scope.songs = CouchtapeService.getSongs();
 }]);
+
+angular.module('couchtapeParty').controller('MenuCtrl', ['$scope', function ($scope) {
+  
+  $scope.menuOpen = false;
+
+  $scope.toggleMenu = function () {
+    if (!$scope.menuOpen) {
+      $scope.menuOpen = true;
+    } else {
+      $scope.menuOpen = false;
+    }
+  }
+}]);

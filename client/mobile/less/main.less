@@ -2,10 +2,55 @@
 @import "default/less/normalize.less";
 @import "default/less/structure.less";
 
-header {
-  background: red;
+a {
+  text-decoration: none;
 }
 
-#main {
-  background: green;
+
+header {
+  h1 {
+    margin: 0;
+    color: #b0b0b0;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 5px solid rgba(0, 0, 0, 0.3);
+    height: 1.6em;
+    padding-top: 0.3em;
+  }
+
+  .menu-btn {
+    background: rgba(255, 255, 255, 0.3);
+    text-shadow: 1px 1px 1px #000;
+    color: #fff;
+    font-weight: bold;
+    display: inline-block;
+    padding: 0.4em;
+    border-radius: 0.3em;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 1em;
+    left: 0.5em;
+  }
+
+  nav {
+    background: #000;
+    position: absolute;
+    top: 50px;
+    left: 8px;
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      color: #b0b0b0;
+      display: block;
+      padding: 1em;
+
+      &:hover {
+        background-color: #ccc;
+        color: #333;
+      }
+    }
+  }
 }

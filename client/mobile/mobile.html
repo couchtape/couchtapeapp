@@ -5,17 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>couchtape Party</title>
     <meta name="viewport" content="width=device-width">
+    <link href='http://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800' rel='stylesheet' type='text/css'>
     <link href=mobile/css/main.css rel=stylesheet>
   </head>
 
   <body ng-app=couchtapeParty>
     <div id="wrap" class="box-v">
-      <header class="flex">
-        <h1>couchtape</h1>
-        <nav>
+      <header class="flex flex-min" ng-controller="MenuCtrl">
+      <h1>couchtape</h1>
+        <a class="menu-btn" ng-click="toggleMenu()">Menu</a>
+        <nav ng-show="menuOpen">
           <ul>
-            <li><a href=#songs>Songs</a></li>
-            <li><a href=#current>Current Song</a></li>
+            <li><a href=#songs ng-click="toggleMenu()">Songs</a></li>
+            <li><a href=#current ng-click="toggleMenu()">Current Song</a></li>
           </ul>
         </nav>
       </header>
@@ -23,5 +25,10 @@
     </div>
   </body>
   <script src=vendor/angular.min.js></script>
+  <script>
+    var CONFIG = {
+
+    };
+  </script>
   <script src=mobile/js/app.js></script>
 </html>

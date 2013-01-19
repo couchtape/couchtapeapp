@@ -24,7 +24,7 @@
   <aside class="flex flex-30 flex-max-300 box-v">
     <button ng-click="next()">Next</button>
     <ul class="flex flex-fill playlist">
-      <li ng-repeat="song in songs" class="{{song.class}}">
+      <li ng-repeat="song in songs" class="{{song.class}}" id="{{song.id}}">
         <img ng-src="{{song.img}}">
         <h1>{{song.title}}</h1>
         <h2>{{song.artist}}</h2>
