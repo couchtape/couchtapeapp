@@ -110,10 +110,22 @@ api.playlist = {};
 
 api.playlist.get = function (session, cb) {
     api.getPlaylistCollection(function (playlistErr, playlistCollection) {
-        playlistCollection.find({'session': session}).sort({'_id':1}).toArray(function(err,data){
+        playlistCollection.find({'session': session}).sort({'ts':1}).toArray(function(err,data){
             cb (err,data);
         })
     });
+
+}
+
+api.playlist.removeFirst = function (session) {
+    api.getPlaylistCollection(function (playlistErr, playlistCollection) {
+        playlistCollection.find({'session': session}).sort({'ts':1}).limit(1).toArray(function(err,data){
+            if (data[0]){
+                playlistCollection.remove({'_id': data[0]._id});
+            }
+        })
+    });
+
 
 }
 
@@ -133,7 +145,8 @@ api.playlist.enqueue = function (session, id) {
                     'artist': data.meta.artist || 'Unknown',
                     'class': '',
                     'id': id,
-                    'session': session
+                    'session': session,
+                    'ts': Date.now()
                 }
 
                 playlistCollection.insert(playlistItem);
