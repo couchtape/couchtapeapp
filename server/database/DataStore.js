@@ -25,7 +25,7 @@ ds.init = function (sessionname) {
             if (items) {
                 ds.db.collection('items', function (err, collection) {
                     for (var key in items) {
-                        ds.tryStore(session, items[key]);
+                        ds.tryStore(collection, sessionname, items[key]);
                     }
                 })
 
@@ -35,7 +35,7 @@ ds.init = function (sessionname) {
     })
 }
 
-ds.tryStore = function (session, item) {
+ds.tryStore = function (collection, session, item) {
     collection.count({id: item.id}, function (err, idCount) {
         if (idCount !== 1) {
             console.log("New Item: " + item.name + " {" + item.id + "}")
