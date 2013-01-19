@@ -1,0 +1,36 @@
+// Mixins Definitions
+
+.box-direction (@direction) {
+  -webkit-box-direction: @direction;
+  -moz-box-direction: @direction;
+  box-direction: @direction;
+}
+
+.box-orient (@direction) {
+  -webkit-box-orient: @direction;
+  -moz-box-orient: @direction;
+  box-orient: @direction;
+}
+
+.display-box {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+}
+.box-pack (@direction) {
+  -webkit-box-pack: @direction;
+  -moz-box-pack: @direction;
+  box-pack: @direction;
+}
+
+.box-flex (@num){
+  -webkit-box-flex: @num;
+  -moz-box-flex: @num;
+  box-flex: @num;
+}
+
+.border-raduis (@radius: 5px) {
+  border-radius: @radius;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+}
