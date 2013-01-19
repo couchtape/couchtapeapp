@@ -264,8 +264,8 @@ function playlistCtrl($scope, $document, CouchtapeService) {
     });
 
     document.onEnqueue = function (data) {
-
         console.log('data', data);
+        $scope.songs.push(data);
     };
 
     $scope.next = function () {
