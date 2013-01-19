@@ -19,109 +19,91 @@ function player($scope) {
 
 function playlistCtrl($scope) {
 
-    o3djs.require('o3djs.shader');
 
-// init() once the page has finished loading.
+    var analyser, canvas, canvasContext, audio;
 
-    var context;
-    var source = 0;
-    var jsProcessor = 0;
-    window.analyser;
-    var analyserView1;
+    window.addEventListener('load', init, false);
 
-    var phaseL = 0.0;
-    var phaseR = 0.0;
-    var kBaseFrequency = 440.0;
-    var phaseIncrL = 2.0 * Math.PI * 440.0 / 44100.0;
-    var phaseIncrR = 2.0 * Math.PI * (kBaseFrequency * 1.1) / 44100.0; // modulate slightly different on right channel
-    var kTwoPi = 2.0 * Math.PI;
-    var pitchRate = 1.0;
-    var currentFile = 0;
+    function init() {
+        setupWebAudio();
+        setupDrawingCanvas();
+        draw();
+    }
 
-    function process(event) {
 
-        // Get left/right input and output arrays
-        var inputArrayL = event.inputBuffer.getChannelData(0);
-        var inputArrayR = event.inputBuffer.getChannelData(1);
-        var outputArrayL = event.outputBuffer.getChannelData(0);
-        var outputArrayR = event.outputBuffer.getChannelData(1);
+// Wire up the <audio> element with the Web Audio analyser (currently Webkit only)
+    function setupWebAudio() {
 
-        var n = inputArrayL.length;
+        // Get our <audio> element
+        audio = document.getElementById('music');
+        // Create a new audio context (that allows us to do all the Web Audio stuff)
+        var audioContext = new webkitAudioContext();
+        // Create a new analyser
+        analyser = audioContext.createAnalyser();
+        // Create a new audio source from the <audio> element
+        var source = audioContext.createMediaElementSource(audio);
+        // Connect up the output from the audio source to the input of the analyser
+        source.connect(analyser);
+        // Connect up the audio output of the analyser to the audioContext destination i.e. the speakers (The analyser takes the output of the <audio> element and swallows it. If we want to hear the sound of the <audio> element then we need to re-route the analyser's output to the speakers)
+        analyser.connect(audioContext.destination);
 
-         for (var i = 0; i < n; ++i) {
-            // Amplitude modulation effect
-            outputArrayL[i] = inputArrayL[i];
-            outputArrayR[i] = inputArrayR[i];
+        audio.play();
+
+        audio.addEventListener('ended', function () {
+            console.log('ended');
+        });
+    }
+
+// Draw the audio frequencies to screen
+    function draw() {
+        // Setup the next frame of the drawing
+        webkitRequestAnimationFrame(draw);
+
+        // Create a new array that we can copy the frequency data into
+        var freqByteData = new Uint8Array(analyser.frequencyBinCount);
+        // Copy the frequency data into our new array
+        analyser.getByteFrequencyData(freqByteData);
+
+        // Clear the drawing display
+        canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+
+        // For each "bucket" in the frequency data, draw a line corresponding to its magnitude
+        for (var i = 0; i < freqByteData.length; i++) {
+            canvasContext.fillRect(i, canvas.height - freqByteData[i], 1, canvas.height);
         }
     }
 
-    function loadSample(url) {
-        // Load asynchronously
-
-        var request = new XMLHttpRequest();
-        request.open("GET", url, true);
-        request.responseType = "arraybuffer";
-
-        console.log('loadSample');
-
-        request.onload = function() {
-            console.log('onload');
-            console.log(source.buffer);
-            source.buffer = context.createBuffer(request.response, false);
-            console.log(source.buffer);
-            source.loop = true;
-            source.noteOn(0);
-            source.gain.value = 1;
-            document.getElementById('view1').style.display = '';
-
-            window.clearInterval(interval);
-            interval = window.setInterval(function () {
-                if (source.buffer.duration < context.currentTime) {
-                    window.clearInterval(interval);
-                    next();
-                }
-            }, 100);
-
-
-            draw();
-        };
-
-        request.send();
+// Basic setup for the canvas element, so we can draw something on screen
+    function setupDrawingCanvas() {
+        canvas = document.getElementById('view1');
+        canvasContext = canvas.getContext('2d');
+        canvasContext.fillStyle = '#ffffff';
     }
 
-    if ( !window.requestAnimationFrame ) {
+    $scope.songs = [
+        {
+            "img": "/api/image/markusmeineke/a62960e5-e0c7-4a98-8344-da6608c802da",
+            //"file": "http://gp.lc/01 All My Life.mp3",
+            "file": "http://gp.lc/04 Dazwischen 2.mp3",
+            //"file": "/api/get/markusmeineke/a62960e5-e0c7-4a98-8344-da6608c802da",
+            "title": "Cherokee",
+            "artist": "Cat Power",
+            "class": "",
+            "id": "a62960e5-e0c7-4a98-8344-da6608c802da",
+            "session": "markusmeineke",
+            "_id": "50fade7b3fb1560f16000001"
+        }
+    ];
 
-        window.requestAnimationFrame = ( function() {
-
-            return window.webkitRequestAnimationFrame ||
-                window.mozRequestAnimationFrame || // comment out if FF4 is slow (it caps framerate at ~30fps: https://bugzilla.mozilla.org/show_bug.cgi?id=630127)
-                window.oRequestAnimationFrame ||
-                window.msRequestAnimationFrame ||
-                function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
-
-                    window.setTimeout( callback, 1000 / 60 );
-
-                };
-
-        } )();
-
-    }
-
-    function draw() {
-        analyserView1.doFrequencyAnalysis();
-        // setTimeout(draw, 0);
-        window.requestAnimationFrame(draw);
-    }
     var songId = 0;
+
+    $scope.currentSong = $scope.songs[0];
 
     function next() {
 
-        source.gain.value = 0;
         console.log($scope.songs);
 
-
         if ($scope.songs.length === 0) {return;}
-
 
         window.setTimeout(function () {
             $scope.$apply(function () {
@@ -141,17 +123,25 @@ function playlistCtrl($scope) {
                         var count = 0;
                         el.addEventListener('webkitTransitionEnd', function () {
                             if (count === 0) {
-                                console.log('webkitTransitionEnd');
-                                console.log('tv/mp3/' + $scope.songs[songId].file);
-                                loadSample('tv/mp3/' + $scope.songs[songId].file);
                                 $scope.$apply(function () {
+                                    $scope.currentSong = $scope.songs[songId];
                                     $scope.songs.shift();
+
+                                    // Get the <audio> element started
+                                    audio.play();
                                 });
                             }
                             count++;
                         }, false);
                     } else {
-                        loadSample($scope.songs[songId].file);
+                        console.log('Loading file: ', $scope.songs[songId].file);
+                        $scope.$apply(function () {
+                            $scope.currentSong = $scope.songs[songId];
+
+                            console.log($scope.currentSong);
+                            // Get the <audio> element started
+                            audio.play();
+                        });
                     }
                     songId = 1;
                 });
@@ -159,93 +149,12 @@ function playlistCtrl($scope) {
         });
 
     }
-    var interval;
 
-    function initAudio() {
-        context = new webkitAudioContext();
-        source = context.createBufferSource();
-
-        // This AudioNode will do the amplitude modulation effect directly in JavaScript
-        jsProcessor = context.createJavaScriptNode(4096);
-        jsProcessor.onaudioprocess = process;
-
-        analyser = context.createAnalyser();
-        analyser.fftSize = 2048;
-
-        // Connect the processing graph: source -> jsProcessor -> analyser -> destination
-        source.connect(jsProcessor);
-        jsProcessor.connect(analyser);
-        analyser.connect(context.destination);
-
-        // Load the sample buffer for the audio source
-        next();
-    }
-
-    function init() {
-        analyserView1 = new AnalyserView("view1");
-        initAudio();
-        //analyserView1.setAnalysisType(ANALYSISTYPE_SONOGRAM);
-        //analyserView1.setAnalysisType(ANALYSISTYPE_WAVEFORM);
-        //analyserView1.setAnalysisType(ANALYSISTYPE_3D_SONOGRAM);
-        analyserView1.setAnalysisType(ANALYSISTYPE_FREQUENCY);
-        analyserView1.initByteBuffer();
-    }
-
-    $scope.currentCover = '';
-
-    $scope.songs = [
-    {
-        img: '/api/image/frankyhill/718654cc-a40f-4dea-8cda-7c52328c2118',
-        file: '/api/get/frankyhill/718654cc-a40f-4dea-8cda-7c52328c2118',
-        title: 'discopolis - committed to sparkle motion',
-        artist: 'Discopolis',
-        class: '',
-        id: ''
-    },
-    {
-        img: 'tv/img/one-by-one.jpg',
-        file: '01 All My Life.mp3',
-        title: 'All My Live',
-        artist: 'Foo Fighters',
-        class: '',
-        id: ''
-    },
-    {
-        img: 'tv/img/wasting-light.jpg',
-        file: '01 Bridge Burning.mp3',
-        title: 'Bridge Burning',
-        artist: 'Foo Fighters',
-        class: '',
-        id: ''
-    },
-    {
-        img: 'tv/img/cat-power-sun.jpg',
-        file: '01 Cherokee.mp3',
-        title: 'Cherokee',
-        artist: 'Cat Power',
-        class: '',
-        id: ''
-    },
-    {
-        img: 'tv/img/foo-fighters-echoes-silence-patience-grace.jpg',
-        file: '01-The-Pretender.mp3',
-        title: 'The Pretender',
-        artist: 'Foo Fighters',
-        class: '',
-        id: ''
-    }
-    ];
-
-    $scope.enqueue = function (data){
-
-    }
+    console.log($scope.currentSong);
 
     $scope.next = function () {
         next();
     };
 
-    document.enqueue = $scope.enqueue;
-    init();
+    //init();
 }
-
-
