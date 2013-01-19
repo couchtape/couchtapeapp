@@ -125,7 +125,7 @@ function playlistCtrl($scope) {
 
         if ($scope.songs.length === 0) {return;}
 
-        loadSample("tv/mp3/" + $scope.songs[0].file);
+        loadSample($scope.songs[0].file);
 
         window.setTimeout(function () {
             $scope.$apply(function () {
@@ -171,7 +171,7 @@ function playlistCtrl($scope) {
     $scope.songs = [
     {
         img: 'tv/img/turmstrasse.jpg',
-        file: '04 Dazwischen 2.mp3',
+        file: 'http://172.16.3.12:3000/api/get/frankyhill/786c7aa3-105a-4302-b68e-77c69981c885',
         title: 'Dazwischen 2',
         artist: 'Kollektiv Turmstrasse',
         class: ''
