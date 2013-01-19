@@ -1,5 +1,6 @@
 var doctape = require('../dtapi.js').api,
     datastore = require('../server/database/DataStore.js');
+
 Enumerable = require('linq');
 
 
@@ -12,6 +13,19 @@ api.getItemsCollection = function (cb) {
     api.db.collection('items', function (err, data) {
         if (err) {
             console.log("Unable to get oAUTH2 Token from MongoDB");
+            cb(err);
+        } else {
+            cb(null, data);
+        }
+
+    });
+
+}
+api.getPlaylistCollection = function (cb) {
+
+    api.db.collection('playlist', function (err, data) {
+        if (err) {
+            console.log("Unable to get Playlistcollection from MongoDB");
             cb(err);
         } else {
             cb(null, data);
@@ -65,6 +79,56 @@ api.getImage = function (req, res) {
     })
 };
 
+api.enqueue = function(req,res) {
+    var session = req.param('session');
+    var id = req.param('id');
+    console.log("Playlist Enqueue: " + id + " to " + session);
+    api.playlist.enqueue(session, id);
+    res.send({'enqueue': 'ok'});
+}
+
+api.getPlaylist = function (req, res) {
+    api.playlist.get(req.param('session'), function (err, data){
+        res.send(data);
+    })
+}
 
 api.artists = function () {
 };
+
+api.playlist = {};
+
+api.playlist.get = function (session, cb) {
+    api.getPlaylistCollection(function (playlistErr, playlistCollection) {
+        playlistCollection.find({'session': session}).sort({'_id':1}).toArray(function(err,data){
+            cb (err,data);
+        })
+    });
+
+}
+
+api.playlist.enqueue = function (session, id) {
+
+    api.getItemsCollection(function (itemsErr, itemsCollection) {
+        api.getPlaylistCollection(function (playlistErr, playlistCollection) {
+
+            itemsCollection.findOne({'id': id}, function(err, data){
+                if (err) {
+                    return;
+                }
+                var playlistItem = {
+                    'img': "/api/image/"+data.user+"/"+data.id,
+                    'file': "/api/get/"+data.user+"/"+data.id,
+                    'title': data.meta.title || data.name,
+                    'artist': data.meta.artist || 'Unknown',
+                    'class': '',
+                    'id': id,
+                    'session': session
+                }
+
+                playlistCollection.insert(playlistItem);
+
+            });
+        });
+    });
+}
