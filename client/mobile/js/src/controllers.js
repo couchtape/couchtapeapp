@@ -12,8 +12,11 @@ angular.module('couchtapeParty').controller('AlbumsCtrl', ['$scope', 'CouchtapeS
 }]);
 
 angular.module('couchtapeParty').controller('SongsCtrl', ['$scope', 'CouchtapeService', function ($scope, CouchtapeService) {
+  var promise = CouchtapeService.getSongs();
 
-  $scope.songs = CouchtapeService.getSongs();
+  promise.then(function (data) {
+    $scope.songs = data;
+  });
 }]);
 
 angular.module('couchtapeParty').controller('MenuCtrl', ['$scope', function ($scope) {

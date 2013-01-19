@@ -1,4 +1,17 @@
-angular.module('couchtapeParty').service('CouchtapeService', ['Playlist', 'Songs', 'Artists', function (Playlist, Songs, Artists) {
+angular.module('couchtapeParty').service('CouchtapeService', ['$http', '$q', 'Playlist', 'Songs', 'Artists', function ($http, $q, Playlist, Songs, Artists) {
+
+  var getSongs = function () {
+    var deferred = $q.defer();
+
+    $http.get('/api/files/pascalprecht').success(function (data, status, headers, config) {
+      deferred.resolve(data);
+    }).error(function (data , status, headers, config) {
+      deferred.reject(data);
+    });
+    return deferred.promise;
+  };
+
+
   return {
     getCurrentSong: function () {
       return Songs[0];
@@ -12,9 +25,7 @@ angular.module('couchtapeParty').service('CouchtapeService', ['Playlist', 'Songs
       return Artists;
     },
 
-    getSongs: function () {
-      return Songs;
-    }
+    getSongs: getSongs
   };
 }]);
 
