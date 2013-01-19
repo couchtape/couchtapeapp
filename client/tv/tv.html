@@ -1,44 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="twitter">
 <head>
   <title>TV</title>
+  <meta charset="utf-8">
+  <link href='http://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="tv/css/main.css" media="screen" />
+  <script src="tv/js/app.js"></script>
 </head>
 <body>
-<div id="wrap" class="box box-h">
-  <section class="flex flex-fill">
-    <div id="stage"></div>
-    <div id="mobile-url"></div>
+<div id="wrap" class="box box-h" ng-controller="playlistCtrl">
+  <section id="stage-wrap" class="flex flex-fill">
+    <div id="stage">
+      <img ng-src="{{currentCover}}">
+    </div>
+    <div id="mobile-url">http://couchtape.com/markusmeineke/party2345345</div>
+    <canvas id="view1" width="800px" height="600px" style="width: 100%;height:50%; left:0;bottom:0;position: absolute;opacity:.5"></canvas>
+
+    <!-- Sliders and other controls will be added here -->
+    <div id="controls"> </div>
+
+    <div id="info"> </div>
   </section>
   <aside class="flex flex-30 flex-max-300 box-v">
+    <button ng-click="next()">Next</button>
     <ul class="flex flex-fill playlist">
-      <li>
-        <img src="">
-        <h1>Songtitel</h1>
-        <h2>Interpret</h2>
-      </li>
-      <li>
-        <img src="">
-        <h1>Songtitel</h1>
-        <h2>Interpret</h2>
-      </li>
-      <li>
-        <img src="">
-        <h1>Songtitel</h1>
-        <h2>Interpret</h2>
-      </li>
-      <li>
-        <img src="">
-        <h1>Songtitel</h1>
-        <h2>Interpret</h2>
-      </li>
-      <li>
-        <img src="">
-        <h1>Songtitel</h1>
-        <h2>Interpret</h2>
+      <li ng-repeat="song in songs" class="{{song.class}}">
+        <img ng-src="{{song.img}}">
+        <h1>{{song.title}}</h1>
+        <h2>{{song.artist}}</h2>
       </li>
     </ul>
-    <div class="flex flex-30 flex-max-250 twitter-stream">
+    <div class="flex flex-30 flex-max-250 twitter">
       <h1>#dthack</h1>
       <img src="">
       <span class="username"></span>
