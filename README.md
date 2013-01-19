@@ -2,19 +2,22 @@
 
 ## Installation
 
-1. Install MongoDB
+### Install MongoDB
 
 On MAC-OSX use Homebrew:
+
 ```
 $ brew install mongo
 ```
 
 For Ubuntu/Debian hosts use:
+
 ```
 $ apt-get install mongodb
 ```
 
-2. Install the required Node_Modules with npm
+### Install the required Node_Modules with npm:
+
 ```
 $ npm install
 ```
