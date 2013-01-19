@@ -59,7 +59,7 @@ app.get('/tv/:session', function (req, res){
     res.render("../build/tv",{'session': req.param('session'), 'host': req.host+":"+app.get('port') });
 })
 app.get('/:session', function (req, res){
-    res.render("../build/mobile",{'session': req.param('session')});
+    res.render("../build/mobile",{'session': req.param('session'), 'host': req.host+":"+app.get('port') });
 })
 
 
