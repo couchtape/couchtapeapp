@@ -1,4 +1,42 @@
 
+#buffer {
+  height: 10px;
+  background: rgba(255,255,255,.1);
+  margin-bottom: 10px;
+
+  & > div {
+    height: 10px;
+    width: 0;
+    background: rgba(255,255,255,.3);
+  }
+}
+
+.inner {
+  padding: 0 20px;
+}
+
+#controls {
+
+  padding: 0 20px;
+
+  button {
+    background: rgba(255, 255, 255, 0.3);
+    text-shadow: 1px 1px 1px #000;
+    color: #fff;
+    font-weight: bold;
+    display: inline-block;
+    padding: 0.4em;
+    border-radius: 0.3em;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    margin-right: 5px;
+  }
+}
+
+#timing {
+  float: right;
+  font-size: 20px;
+}
+
 .playlist {
   margin: 0;
   padding: 15px 0 0 0;
@@ -6,14 +44,14 @@
   li {
 
     list-style: none;
-    padding: 5px 20px;
+    padding: 7px 20px;
     -webkit-transition: all .5s;
 
     img {
       width: 0;
       float: left;
       -webkit-transition: all .5s;
-      -webkit-box-reflect: below 5px -webkit-linear-gradient(rgba(255,255,255,0) 70%, rgba(255,0,0,.2));
+      -webkit-box-reflect: below 2px -webkit-linear-gradient(rgba(255,255,255,0) 70%, rgba(255,0,0,.2));
     }
 
     &.active {
@@ -24,6 +62,10 @@
       h1, h2 {
         display: block;
       }
+      h1 {
+        font-size: 28px;
+        font-weight: 600;
+      }
       &:after {
         content: "";
         display: table;
@@ -33,10 +75,12 @@
 
     h1, h2 {
       font-weight: 200;
+      font-size: 22px;
     }
     h1 {
       padding: 0 10px 0 0;
       margin: 0;
+      color: rgba(255,255,255,.5);
       display: inline-block;
     }
 
@@ -56,7 +100,22 @@
 #stage-wrap {
   position: relative;
 
+  #beat-animation {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
   #stage {
+    position: relative;
+    z-index: 2;
     width: 100%;
     height: 100%;
     text-align: center;
@@ -83,6 +142,7 @@
   }
   #mobile-url {
     position: absolute;
+    z-index: 2;
     left: 20px;
     bottom: 20px;
     right: 20px;
@@ -95,3 +155,11 @@
   }
 }
 
+#visualizer {
+  width: 100%;
+  height: 50%;
+  left: 0;
+  bottom: 0;
+  position: absolute;
+  opacity: .2;
+}

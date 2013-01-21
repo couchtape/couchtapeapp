@@ -8,11 +8,11 @@ module.exports = function (grunt) {
 
     concat: {
       mobile: {
-        src: ['client/default/js/src/*.js', 'client/mobile/js/src/*.js'],
+        src: ['client/default/js/libs/angular/angular.js', 'client/default/js/src/bootstrap.js', 'client/default/js/src/apiService.js', 'client/default/js/src/socketIOService.js', 'client/mobile/js/src/*.js'],
         dest: 'build/mobile/js/app.js'
       },
       tv: {
-        src: ['client/default/js/libs/visualizer/events.js', 'client/default/js/libs/visualizer/o3d.js', 'client/default/js/src/socket.js', 'client/default/js/libs/visualizer/cameracontroller.js', 'client/default/js/libs/visualizer/matrix4x4.js', 'client/default/js/libs/visualizer/visualizer.js', 'client/default/js/libs/visualizer/shader.js', 'client/default/js/libs/angular/angular.js', 'client/tv/js/*.js', 'client/tv/js/directives/*.js', 'client/default/js/libs/angular/angular-resource.js'],
+        src: ['client/default/js/libs/angular/angular.js', 'client/default/js/libs/angular/angular-resource.js', 'client/default/js/src/bootstrap.js', 'client/default/js/src/apiService.js', 'client/default/js/src/socketIOService.js', 'client/tv/js/*.js', 'client/tv/js/directives/*.js', 'client/tv/js/controller/*.js'],
         dest: 'build/tv/js/app.js'
       }
     },
@@ -44,7 +44,6 @@ module.exports = function (grunt) {
     copy: {
       lib: {
         files: {
-          'build/vendor/': 'client/default/js/libs/angular/angular.min.js',
           'build/vendor/': 'client/mobile/css/add2home.css'
         }
       },
@@ -57,8 +56,6 @@ module.exports = function (grunt) {
       },
       tv: {
         files: {
-            "build/tv/shaders/": ["client/tv/shaders/**"],
-            /*"build/tv/mp3/": ["client/tv/mp3/**"],*/
             "build/tv/img/": ["client/default/img/**"],
             'build/tv.html': 'client/tv/tv.html'
         }

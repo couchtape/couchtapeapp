@@ -4,15 +4,11 @@
 
 var express = require('express'),
     routes = require('./routes'),
-    user = require('./routes/user'),
     http = require('http'),
     path = require('path'),
-    api = require('./routes/api'),
-    login = require('./routes/login'),
-    client = require('./routes/client'),
     request = require('request'),
-    tapeRequests = require('./src/tapeRequests'),
     sha1 = require('sha1'),
+    tapeRequests = require('./src/tapeRequests'),
     oauth = require('./src/oauth');
 
 var app = express(),
@@ -97,7 +93,7 @@ app.get('/tv/:session', function (req, res) {
         console.log("New Adress: " + address);
         io.of(address).on('connection', function (socket) {
 
-            socket.on('nextsong', function (data) {
+            socket.on('nextSong', function (data) {
                 api.playlist.removeFirst(data);
                 console.log("Next Song EVENT");
                 var ioObject = {};
@@ -107,7 +103,7 @@ app.get('/tv/:session', function (req, res) {
             });
             socket.on('disconnect', function () {
 
-            })
+            });
 
             api.sendEnqueue = function (data) {
                 console.log("Event Enqueue: " + data);
@@ -115,13 +111,14 @@ app.get('/tv/:session', function (req, res) {
                 ioObject['everyone'] = "in";
                 ioObject[address] = data;
                 socket.broadcast.emit('enqueue', ioObject);
-            }
+            };
 
         });
     }
 
     res.render("../build/tv", {'session': req.param('session'), 'host': req.host + ":" + app.get('port') });
-})
+});
+
 app.get('/:session', function (req, res) {
     res.render("../build/mobile", {'session': req.param('session'), 'host': req.host + ":" + app.get('port') });
 })

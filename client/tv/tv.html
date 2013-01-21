@@ -16,29 +16,40 @@
   <script src="/tv/js/app.js"></script>
 </head>
 <body>
-<div id="wrap" class="box box-h" ng-controller="playlistCtrl">
+<div id="wrap" class="box box-h" ng-controller="playlistCtrl" ng-init="init()">
   <section id="stage-wrap" class="flex flex-fill">
     <div id="stage">
       <img ng-src="{{currentSong.img}}">
     </div>
     <div id="mobile-url">http://<%=host%>/<%=session%></div>
-    <canvas id="view1" width="800px" height="600px" style="width: 100%;height:50%; left:0;bottom:0;position: absolute;opacity:.5"></canvas>
-    <audio id="music" src="{{currentSong.file}}" preload="auto"></audio>
+    <canvas id="visualizer" width="1024" height="255"></canvas>
   </section>
   <aside class="flex flex-30 flex-max-300 box-v">
-    <button ng-click="next()">Next</button>
-    <ul class="flex flex-fill playlist">
-      <li ng-repeat="song in songs" class="{{song.class}}" id="{{song.id}}">
-        <img ng-src="{{song.img}}">
-        <h1>{{song.title}}</h1>
-        <h2>{{song.artist}}</h2>
-      </li>
-    </ul>
+    <div class="flex flex-fill">
+      <div class="">
+        <div id="buffer"><div style="width:{{buffered}}%"></div></div>
+        <div id="controls">
+          <div id="timing"><span>{{currentTime}}</span> | <span>{{duration}}</span></div>
+          <button ng-click="pause()">Pause</button>
+          <button ng-click="play()">Play</button>
+          <button ng-click="next()">Next</button>
+        </div>
+      </div>
+      <ul class="playlist">
+        <li ng-repeat="song in playlist" class="{{song.class}}" id="{{song.id}}">
+          <img ng-src="{{song.img}}">
+          <h1>{{song.title}}</h1>
+          <h2>{{song.artist}}</h2>
+        </li>
+      </ul>
+    </div>
     <div class="flex flex-30 flex-max-250 twitter">
-      <h1>#dthack</h1>
-      <img src="">
-      <span class="username"></span>
-      <p class="tweet">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et ma</p>
+      <div class="inner">
+        <h1>#dthack</h1>
+        <img src="">
+        <span class="username"></span>
+        <p class="tweet">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et ma</p>
+      </div>
     </div>
   </aside>
 </div>

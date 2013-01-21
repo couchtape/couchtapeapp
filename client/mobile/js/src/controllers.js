@@ -1,21 +1,21 @@
-angular.module('couchtapeParty').controller('CurrentSongCtrl', ['$document', '$scope', 'CouchtapeService', function ($document, $scope, CouchtapeService) {
+angular.module('couchtapeParty').controller('CurrentSongCtrl', ['$scope', 'CouchtapeService', 'SocketIO', function ($scope, CouchtapeService, SocketIO) {
   var promise = CouchtapeService.getPlaylist();
   $scope.playlist = [];
 
-  $scope.setupSocketFunc = function () {
-    document.onEnqueue = function (data) {
-      $scope.$apply(function () {
-        $scope.playlist.push(data);
-      });
-    };
+  SocketIO.on('enqueue', function (data) {
+    $scope.$apply(function () {
+      $scope.playlist.push(data);
+    });
+  });
 
-    document.onNextSong = function () {
-      console.log('Trigger nex song');
+  SocketIO.on('nextSong', function () {
+    // add a timeout to be sure, that $apply works
+    window.setTimeout(function () {
       $scope.$apply(function () {
         $scope.playlist.shift();
       });
-    };
-  };
+    });
+  });
 
   $scope.song = CouchtapeService.getCurrentSong();
 
@@ -42,21 +42,21 @@ angular.module('couchtapeParty').controller('SongsCtrl', ['$scope', 'CouchtapeSe
   $scope.addSong2Playlist = function (id) {
     var promise = CouchtapeService.addSong2Playlist(id);
 
-    promise.then(function (data) {
+    promise.then(function () {
       alert('Added song to playlist');
     });
   };
 }]);
 
-angular.module('couchtapeParty').controller('MenuCtrl', ['$scope', function ($scope) {
+angular.module('couchtapeParty').controller('MenuCtrl', ['$scope', 'SocketIO', function ($scope, SocketIO) {
 
   $scope.menuOpen = false;
 
   $scope.toggleMenu = function () {
-    if (!$scope.menuOpen) {
-      $scope.menuOpen = true;
-    } else {
-      $scope.menuOpen = false;
-    }
-  }
+    $scope.menuOpen = !$scope.menuOpen;
+  };
+
+  $scope.nextSong = function () {
+    SocketIO.nextSong(true);
+  };
 }]);

@@ -1,10 +1,10 @@
-<div class="scroll-h">
+<div class="flex flex-fill scroll-h">
   <ul class="song-list">
     <li ng-repeat="song in songs">
       <figure>
         <img ng-src="{{song.image}}/small" width="100"> 
         <figcaption> 
-        <span>{{song.name}} - {{song.meta.artist}}</span>
+        <span>{{song.meta.title}} - {{song.meta.artist}}</span>
         </figcaption>
       </figure>
       <a ng-click="addSong2Playlist(song.id)" class="add">Add to Playlist</a>
