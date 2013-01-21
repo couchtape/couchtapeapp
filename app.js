@@ -7,18 +7,32 @@ var express = require('express'),
     user = require('./routes/user'),
     http = require('http'),
     path = require('path'),
-    doctape = require('./dtapi').api,
     api = require('./routes/api'),
     login = require('./routes/login'),
     client = require('./routes/client'),
     request = require('request'),
-    MongoClient = require('mongodb');
+    tapeRequests = require('./src/tapeRequests'),
+    sha1 = require('sha1'),
+    oauth = require('./src/oauth');
 
-var app = express();
+var app = express(),
+    server = http.createServer(app),
+    code;
 
-var server = http.createServer(app);
+app.datastore = {
+    partys: {},
+    userData: {},
+    itemhash: {},
+    counter: 0,
+    salt: sha1(Math.random())
+};
 
-var code;
+var hookstorage = function (req, res, next) {
+    req.storage = app.datastore;
+    req.storage.counter++;
+    next()
+}
+
 
 app.configure(function () {
     app.set('port', process.env.PORT || 3000);
@@ -47,20 +61,31 @@ server.listen(app.get('port'), function () {
 
 var io = require('socket.io').listen(server);
 
+var fail = function (req, res) {
+    res.send("Not Implemented YET!");
+}
+
 app.get('/', routes.index);
-app.get('/users', user.list);
-app.get('/api/account/:session', api.account);
-app.get('/api/tapes/:session', api.tapes);
-app.get('/api/files/:session', api.files);
-app.get('/api/artists/:session', api.artists);
-app.get('/api/artists/files/:session/:artist', api.artists);
-app.get('/api/get/:session/:id', api.get);
-app.get('/api/image/:session/:id', api.getImage);
-app.get('/api/image/:session/:id/small', api.getImageSmall);
-app.get('/api/enqueue/:session/:id', api.enqueue);
-app.get('/api/playlist/:session', api.getPlaylist);
-app.get('/login', login.index);
-app.get('/login/response', login.oauth);
+
+app.get('/login', oauth.login);
+app.get('/login/response', oauth.getSession, hookstorage, oauth.keyExchange, oauth.getData, oauth.renderUserAccount);
+app.get('/api/get/:id', hookstorage, tapeRequests.getStream);
+app.get('/api/image/:id', hookstorage, tapeRequests.getImage);
+app.get('/api/image/:id/small', hookstorage, tapeRequests.getImageSmall);
+app.get('/api/files/:session', fail);
+app.get('/api/enqueue/:session/:id', fail);
+app.get('/api/playlist/:session', fail);
+
+/// OLD API
+app.get('/api/get/:session/:id', hookstorage, tapeRequests.getStream);
+app.get('/api/image/:session/:id', hookstorage, tapeRequests.getImage);
+app.get('/api/image/:session/:id/small', hookstorage, tapeRequests.getImageSmall);
+
+app.get('/debug', hookstorage, function (req, res) {
+    res.send(req.storage);
+})
+
+
 app.get('/client', client.index);
 app.get('/client/mobile', client.mobile);
 app.get('/client/station', client.station);
@@ -69,7 +94,7 @@ app.get('/tv/:session', function (req, res) {
 
     if (!registered[address]) {
         registered[address] = true;
-        console.log("New Adress: "+address);
+        console.log("New Adress: " + address);
         io.of(address).on('connection', function (socket) {
 
             socket.on('nextsong', function (data) {
@@ -100,38 +125,3 @@ app.get('/tv/:session', function (req, res) {
 app.get('/:session', function (req, res) {
     res.render("../build/mobile", {'session': req.param('session'), 'host': req.host + ":" + app.get('port') });
 })
-
-var registered = {};
-var store = {};
-
-var data = [];
-
-store.set = function (key, value) {
-    data[key] = value;
-}
-
-store.get = function (key) {
-    return data[key];
-}
-
-
-MongoClient.connect("mongodb://localhost:27017/couchtape", function (err, db) {
-    if (!err) {
-
-        db.collection('playlist', function (colError, collection) {
-            collection.ensureIndex({'ts': 1});
-        })
-
-        console.log("Connected to Database");
-
-        login.db = db;
-        login.set = store.set;
-        login.get = store.get;
-
-        api.db = db;
-        api.get = store.get;
-
-
-    }
-});
-

@@ -17,6 +17,7 @@
         "request": "*",
         "underscore": "*",
         "linq": "*",
-        "uinexpress": "*"
+        "uinexpress": "*",
+        "sha1": "*"
     }
 }

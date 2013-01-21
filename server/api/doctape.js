@@ -404,28 +404,8 @@
     });
   };
 
-  /**
-   *
-   * Download `filename` of given `docId`, stream content to `stream`;
-   *
-   * @param {string} docId
-   * @param {string} filename
-   * @param {Object} stream
-   * @param {function (Object, Object=)} cb
-   */
-  DoctapeCore.prototype.downloadStream = function (docId, filename, stream, cb) {
-    if (!this.env['isNode']) {
-      console.log("Only available in Node.js");
-    } else {
-      _get_authorized_pipe.call(this, '/doc/' + docId + '/' + filename,
-                      function (err, data){
-        if (err) { return cb(err); }
-        return cb(null, data);
-      },stream);
-    }
-  };
 
-  /**
+    /**
    *
    * Download `filename` of given `docId`, put content in (cb);
    *
