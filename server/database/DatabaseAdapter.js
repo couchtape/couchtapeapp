@@ -13,5 +13,5 @@ db.setConnection = function (connection) {
 };
 
 db.findBySession = function (sessionId, cb) {
-    dbconnection.collection()
-}
+    dbconnection.collection();
+};

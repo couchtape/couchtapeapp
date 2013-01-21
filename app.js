@@ -72,7 +72,7 @@ app.get('/tv/:session', function (req, res) {
         console.log("New Adress: "+address);
         io.of(address).on('connection', function (socket) {
 
-            socket.on('nextsong', function (data) {
+            socket.on('nextSong', function (data) {
                 api.playlist.removeFirst(data);
                 console.log("Next Song EVENT");
                 var ioObject = {};
@@ -82,7 +82,7 @@ app.get('/tv/:session', function (req, res) {
             });
             socket.on('disconnect', function () {
 
-            })
+            });
 
             api.sendEnqueue = function (data) {
                 console.log("Event Enqueue: " + data);
@@ -90,16 +90,17 @@ app.get('/tv/:session', function (req, res) {
                 ioObject['everyone'] = "in";
                 ioObject[address] = data;
                 socket.broadcast.emit('enqueue', ioObject);
-            }
+            };
 
         });
     }
 
     res.render("../build/tv", {'session': req.param('session'), 'host': req.host + ":" + app.get('port') });
-})
+});
+
 app.get('/:session', function (req, res) {
     res.render("../build/mobile", {'session': req.param('session'), 'host': req.host + ":" + app.get('port') });
-})
+});
 
 var registered = {};
 var store = {};
@@ -108,19 +109,18 @@ var data = [];
 
 store.set = function (key, value) {
     data[key] = value;
-}
+};
 
 store.get = function (key) {
     return data[key];
-}
-
+};
 
 MongoClient.connect("mongodb://localhost:27017/couchtape", function (err, db) {
     if (!err) {
 
         db.collection('playlist', function (colError, collection) {
             collection.ensureIndex({'ts': 1});
-        })
+        });
 
         console.log("Connected to Database");
 
@@ -134,4 +134,3 @@ MongoClient.connect("mongodb://localhost:27017/couchtape", function (err, db) {
 
     }
 });
-
