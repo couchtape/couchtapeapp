@@ -13,8 +13,13 @@ tape.getImageSmall = function (req, res, next) {
 }
 
 tape.streamFromCloud = function (type, req, res) {
-    var itemhash = req.param('id'),
-        username = req.storage.itemhash[itemhash].username,
+    var itemhash = req.param('id');
+    if (!req.storage.itemhash[itemhash]) {
+        res.send("HASH NOT FOUND!");
+        return
+    }
+
+    var username = req.storage.itemhash[itemhash].username,
         itemid = req.storage.itemhash[itemhash].id,
         options = req.storage.userData[username].apiAdapter.core.options.resourcePt,
         endpoint = "/doc/"+itemid+"/"+type,

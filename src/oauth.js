@@ -17,7 +17,6 @@ oauth.keyExchange = function (req, res, callback) {
     var oauth_key = req.useOAuthKey || req.session.oauthKey,
         doctape = oauth.getApi();
 
-    console.dir(req.session);
     if (!oauth_key) {
         res.send("no valid oauth sessionkey");
         return
@@ -49,7 +48,10 @@ oauth.getData = function (req, res, callback) {
         req.doctapeApi.getDocumentListWithMetadata(function (files){
             req.storage.userData[data.username].documents = files;
             for (var file in files) {
-                req.storage.itemhash[sha1(file+data.username+req.storage.salt)] = {
+                var hash = sha1(file+data.username+req.storage.salt);
+                req.storage.userData[data.username].documents[file].hash = hash;
+
+                req.storage.itemhash[hash] = {
                     username: data.username,
                     id: file
                 };

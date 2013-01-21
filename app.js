@@ -9,11 +9,13 @@ var express = require('express'),
     request = require('request'),
     sha1 = require('sha1'),
     tapeRequests = require('./src/tapeRequests'),
+    session = require('./src/session'),
     oauth = require('./src/oauth');
 
 var app = express(),
     server = http.createServer(app),
-    code;
+    code,
+    registered = {};
 
 app.datastore = {
     partys: {},
@@ -64,13 +66,14 @@ var fail = function (req, res) {
 app.get('/', routes.index);
 
 app.get('/login', oauth.login);
-app.get('/login/response', oauth.getSession, hookstorage, oauth.keyExchange, oauth.getData, oauth.renderUserAccount);
+app.get('/login/response', oauth.getSession, hookstorage, oauth.keyExchange, oauth.getData, routes.start);
 app.get('/api/get/:id', hookstorage, tapeRequests.getStream);
 app.get('/api/image/:id', hookstorage, tapeRequests.getImage);
 app.get('/api/image/:id/small', hookstorage, tapeRequests.getImageSmall);
-app.get('/api/files/:session', fail);
-app.get('/api/enqueue/:session/:id', fail);
-app.get('/api/playlist/:session', fail);
+app.get('/api/files/:session', hookstorage, session.files);
+app.get('/api/enqueue/:session/:id', hookstorage, session.enqueue);
+app.get('/api/playlist/:session', hookstorage, session.playlist);
+app.get('/session/start', hookstorage, session.start)
 
 /// OLD API
 app.get('/api/get/:session/:id', hookstorage, tapeRequests.getStream);
@@ -82,11 +85,9 @@ app.get('/debug', hookstorage, function (req, res) {
 })
 
 
-app.get('/client', client.index);
-app.get('/client/mobile', client.mobile);
-app.get('/client/station', client.station);
 app.get('/tv/:session', function (req, res) {
     var address = "/" + req.param('session');
+    var sessionId = req.param('session');
 
     if (!registered[address]) {
         registered[address] = true;
@@ -94,18 +95,15 @@ app.get('/tv/:session', function (req, res) {
         io.of(address).on('connection', function (socket) {
 
             socket.on('nextSong', function (data) {
-                api.playlist.removeFirst(data);
+                session.removeFirst(data, sessionId);
                 console.log("Next Song EVENT");
                 var ioObject = {};
                 ioObject['everyone'] = "in";
                 ioObject[address] = "will get";
                 socket.broadcast.emit('next', ioObject);
             });
-            socket.on('disconnect', function () {
 
-            });
-
-            api.sendEnqueue = function (data) {
+            session.sendEnqueue[sessionId] = function (data) {
                 console.log("Event Enqueue: " + data);
                 var ioObject = {};
                 ioObject['everyone'] = "in";
@@ -115,7 +113,6 @@ app.get('/tv/:session', function (req, res) {
 
         });
     }
-
     res.render("../build/tv", {'session': req.param('session'), 'host': req.host + ":" + app.get('port') });
 });
 
