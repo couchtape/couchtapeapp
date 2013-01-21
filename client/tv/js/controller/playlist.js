@@ -171,7 +171,7 @@ function playlistCtrl($scope, CouchtapeService, SocketIO) {
     function setupDrawingCanvas() {
         canvas = document.getElementById('visualizer');
         canvasContext = canvas.getContext('2d');
-        canvasContext.fillStyle = '#ffffff';
+        canvasContext.fillStyle = '#000000';
     }
 
 
