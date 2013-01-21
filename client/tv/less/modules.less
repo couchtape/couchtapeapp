@@ -1,4 +1,16 @@
 
+#buffer {
+  height: 10px;
+  background: rgba(255,255,255,.1);
+  margin-bottom: 10px;
+
+  & > div {
+    height: 10px;
+    width: 0;
+    background: rgba(255,255,255,.3);
+  }
+}
+
 .playlist {
   margin: 0;
   padding: 15px 0 0 0;
@@ -56,7 +68,22 @@
 #stage-wrap {
   position: relative;
 
+  #beat-animation {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
   #stage {
+    position: relative;
+    z-index: 2;
     width: 100%;
     height: 100%;
     text-align: center;
@@ -83,6 +110,7 @@
   }
   #mobile-url {
     position: absolute;
+    z-index: 2;
     left: 20px;
     bottom: 20px;
     right: 20px;

@@ -1,4 +1,4 @@
-angular.module('couchtapeParty', []).config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+angular.module('couchtapeParty').config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
   $routeProvider.when('/current', {
     templateUrl: 'mobile/tmpl/current-song.html',
     controller: 'CurrentSongCtrl'

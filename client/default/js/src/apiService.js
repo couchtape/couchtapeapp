@@ -3,7 +3,7 @@ angular.module('couchtapeParty').service('CouchtapeService', ['$http', '$q', 'Pl
   var getSongs = function () {
     var deferred = $q.defer();
 
-    $http.get('/api/files/'+CONFIG.session).success(function (data, status, headers, config) {
+    $http.get('/api/files/' + CONFIG.session).success(function (data, status, headers, config) {
       deferred.resolve(data);
     }).error(function (data , status, headers, config) {
       deferred.reject(data);
@@ -20,7 +20,7 @@ angular.module('couchtapeParty').service('CouchtapeService', ['$http', '$q', 'Pl
       deferred.reject(reason);
     });
     return deferred.promise;
-  }
+  };
 
   return {
     getCurrentSong: function () {
@@ -143,5 +143,5 @@ angular.module('couchtapeParty').value('Songs', [
     genre: 'Electronica',
     duration: 'what?!',
     thumb: 'http://userserve-ak.last.fm/serve/_/23347675/Cross+justice__cover.jpg'
-  },
+  }
 ]);

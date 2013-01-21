@@ -14,7 +14,8 @@
   <body ng-app=couchtapeParty>
     <div id="wrap" class="box-v">
       <header class="flex flex-min" ng-controller="MenuCtrl">
-      <h1>couchtape</h1>
+        <a class="next-btn" ng-click="nextSong()">Next</a>
+        <h1>couchtape</h1>
         <a class="menu-btn" ng-click="toggleMenu()">Menu</a>
         <nav ng-show="menuOpen">
           <ul>
@@ -33,6 +34,5 @@
       };
   </script>
   <script src="/socket.io/socket.io.js"></script>
-  <script src=vendor/angular.min.js></script>
   <script src=/mobile/js/app.js></script>
 </html>
