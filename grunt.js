@@ -56,8 +56,6 @@ module.exports = function (grunt) {
       },
       tv: {
         files: {
-            "build/tv/shaders/": ["client/tv/shaders/**"],
-            /*"build/tv/mp3/": ["client/tv/mp3/**"],*/
             "build/tv/img/": ["client/default/img/**"],
             'build/tv.html': 'client/tv/tv.html'
         }
