@@ -10,6 +10,11 @@ Everything is now stored in Process. So no Database is needed anymore.
 $ npm install
 ```
 
+## Build the app
+```
+$ grunt
+```
+
 ## Starting the couchtape
 
 set the environment variables to match your configuration:
