@@ -9,6 +9,18 @@ function playlistCtrl($scope, CouchtapeService, SocketIO) {
     // space between the bars of the canvas animation
     var barsSpace = 3;
 
+    // cache of the last "maxEffectFrames" frequencies
+    var freqCache = [];
+
+    // if you dont want the effect, set maxEffectFrames to 0
+    var maxEffectFrames = 60;
+
+    // normal canvas fill color
+    var frontColor = '#000000';
+
+    // effect canvas fill color
+    var effectColor = 'rgba(0, 0, 0, .5)';
+
     // complete duration of the song
     $scope.duration = '00:00';
 
@@ -135,13 +147,14 @@ function playlistCtrl($scope, CouchtapeService, SocketIO) {
     function draw() {
 
         var i,
+            j,
             freqByteData,
             key,
+            joinedFreqEffect = [],
             joinedFreq = [];
 
         // Setup the next frame of the drawing
         webkitRequestAnimationFrame(draw);
-
 
         if (analyser) {
             // Create a new array that we can copy the frequency data into
@@ -160,10 +173,49 @@ function playlistCtrl($scope, CouchtapeService, SocketIO) {
                 }
                 joinedFreq[key] += freqByteData[i];
             }
-            for (i = 0; i < joinedFreq.length; i++) {
-                canvasContext.fillRect(i * joinFreqBars, canvas.height - (joinedFreq[i] / joinFreqBars), joinFreqBars - barsSpace, canvas.height);
+
+            // Loop through the freqCache and find the highest value of each frequency
+            for (i = 0; i < freqCache.length; i++) {
+                for (j = 0; j < freqCache[i].length; j++) {
+                    if (joinedFreqEffect[j]) {
+                        joinedFreqEffect[j] = joinedFreqEffect[j] > freqCache[i][j] ? joinedFreqEffect[j] : freqCache[i][j];
+                    } else {
+                        joinedFreqEffect[j] = freqCache[i][j];
+                    }
+                }
             }
 
+            // Remove all frequencies which are lower than the current frequencies
+            for (i = 0; i < joinedFreqEffect.length; i++) {
+                if (joinedFreqEffect[i] < joinedFreq[i]) {
+                    joinedFreqEffect[i] = undefined;
+                }
+            }
+
+            // Fill canvas with the effect frequencies
+            fillCanvas(joinedFreqEffect, effectColor);
+
+            // Fill canvas with the current frequencies
+            fillCanvas(joinedFreq, frontColor);
+
+            // Push current frequencies to the cache
+            freqCache.push(joinedFreq);
+
+            if (freqCache.length > maxEffectFrames) {
+                freqCache.shift();
+            }
+
+        }
+    }
+
+    function fillCanvas (data, color) {
+        var i;
+        canvasContext.fillStyle = color;
+
+        for (i = 0; i < data.length; i++) {
+            if (data[i]) {
+                canvasContext.fillRect(i * joinFreqBars, canvas.height - (data[i] / joinFreqBars), joinFreqBars - barsSpace, canvas.height);
+            }
         }
     }
 
@@ -171,7 +223,6 @@ function playlistCtrl($scope, CouchtapeService, SocketIO) {
     function setupDrawingCanvas() {
         canvas = document.getElementById('visualizer');
         canvasContext = canvas.getContext('2d');
-        canvasContext.fillStyle = '#000000';
     }
 
 
