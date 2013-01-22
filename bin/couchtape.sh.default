@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export APPLICATION_ID="<your-app-id>"
+export APPLICATION_SECRET="<your-app-secret>"
+export APPLICATION_OAUTH_REDIRECT="<your-app-callback-url>"
+
+node ../app.js
