@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>couchtape</title>
-    <link rel="stylesheet" type="text/css" href="/mobile/css/main.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/mobile/css/main.css" media="screen" />
+  <title>couchtape</title>
+  <link rel="stylesheet" type="text/css" href="/mobile/css/main.css" media="screen" />
 </head>
 <body>
 
 <div id="wrap" class="box-v">
-
-    <form action="/session/start" method="get">
-        <p>Name der couchtape-session</p>
-        <input type="text" id="name" name="name"/>
-        <input type="submit" />
-    </form>
+  <header class="flex flex-min" ng-controller="MenuCtrl">
+    <h1>couchtape</h1>
+  </header>
+  <div id="main" class="flex flex-fill">
+    <div class="login-box">
+      <form action="/session/start" method="get">
+        <h1>Name der couchtape-session</h1>
+        <p>
+          <input type="text" id="name" name="name" placeholder="Session-Name"/>
+        </p>
+        <button type="submit">Session starten</button>
+      </form>
+    </div>
+  </div>
 </div>
-
+<script>
+  document.getElementById('name').focus();
+</script>
 </body>
 </html>

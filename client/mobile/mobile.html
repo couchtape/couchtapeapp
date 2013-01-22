@@ -14,9 +14,9 @@
   <body ng-app=couchtapeParty>
     <div id="wrap" class="box-v">
       <header class="flex flex-min" ng-controller="MenuCtrl">
-        <a class="next-btn" ng-click="nextSong()">Next</a>
         <h1>couchtape</h1>
-        <a class="menu-btn" ng-click="toggleMenu()">Menu</a>
+        <button class="next-btn" ng-click="nextSong()">Next</button>
+        <button class="menu-btn" ng-click="toggleMenu()">Menu</button>
         <nav ng-show="menuOpen">
           <ul>
             <li><a href=#songs ng-click="toggleMenu()">Songs</a></li>
